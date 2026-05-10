@@ -1,0 +1,5252 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>程序员英语单词学习</title>
+  <style>
+:root {
+  color-scheme: light;
+  --bg: #f7f7f3;
+  --surface: #ffffff;
+  --surface-muted: #f0f4f2;
+  --text: #18201d;
+  --muted: #5f6b65;
+  --line: #d9dfdb;
+  --accent: #1f6f5b;
+  --accent-strong: #164e40;
+  --focus: #bd7a24;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--accent);
+  color: #ffffff;
+  cursor: pointer;
+  min-height: 40px;
+  padding: 0 16px;
+}
+
+button:hover,
+button:focus-visible {
+  background: var(--accent-strong);
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--text);
+  padding: 0 12px;
+}
+
+input:focus,
+select:focus,
+button:focus-visible,
+.word-item:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--focus) 36%, transparent);
+  outline-offset: 2px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px 20px 16px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.app-header p {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 16px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px 32px;
+}
+
+.toolbar,
+.resources-panel,
+.study-panel,
+.word-list-wrap {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.toolbar {
+  display: grid;
+  grid-column: 1;
+  gap: 8px;
+  align-self: start;
+  padding: 16px;
+}
+
+.resources-panel {
+  display: grid;
+  grid-column: 1;
+  gap: 12px;
+  align-self: start;
+  padding: 16px;
+}
+
+.resources-panel h2,
+.resources-panel h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.resources-panel h3 {
+  margin-top: 4px;
+  font-size: 16px;
+}
+
+.tip-list,
+.resource-list {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tip-list li {
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  padding-left: 10px;
+}
+
+.resource-list a {
+  display: grid;
+  gap: 3px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 10px;
+  text-decoration: none;
+}
+
+.resource-list a:hover,
+.resource-list a:focus-visible {
+  background: var(--surface-muted);
+  outline: 3px solid color-mix(in srgb, var(--focus) 36%, transparent);
+  outline-offset: 2px;
+}
+
+.resource-list span {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.search-label,
+.category-label {
+  font-weight: 700;
+}
+
+.study-panel {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 230px;
+  padding: 24px;
+}
+
+.word-focus {
+  display: grid;
+  gap: 10px;
+}
+
+.word-meta {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.word-focus h2 {
+  margin: 0;
+  font-size: 42px;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.word-focus p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+#activeMeaning {
+  color: var(--text);
+  font-size: 21px;
+  font-weight: 700;
+}
+
+#activeExample {
+  color: var(--accent-strong);
+}
+
+.audio-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+#speakButton,
+#youdaoButton {
+  justify-self: start;
+}
+
+.word-list-wrap {
+  grid-column: 1 / -1;
+  overflow: hidden;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  padding: 14px 16px;
+}
+
+.list-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+#countLabel {
+  color: var(--muted);
+}
+
+.word-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 520px;
+  overflow: auto;
+}
+
+.word-item {
+  display: grid;
+  gap: 4px;
+  min-height: 108px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: #ffffff;
+  color: var(--text);
+  text-align: left;
+  padding: 14px;
+}
+
+.word-item:hover,
+.word-item.is-active {
+  background: var(--surface-muted);
+}
+
+.word-item strong {
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.word-item span {
+  color: var(--muted);
+}
+
+.word-item small {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  padding: 28px 16px;
+}
+
+@media (max-width: 760px) {
+  .app-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar,
+  .resources-panel,
+  .study-panel {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .resources-panel {
+    order: 3;
+  }
+
+  .word-focus h2 {
+    font-size: 34px;
+  }
+}
+
+</style>
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>程序员英语单词学习</h1>
+      <p id="summary">加载词表中</p>
+    </div>
+    <button id="shuffleButton" type="button">随机学习</button>
+  </header>
+
+  <main class="app-shell">
+    <section class="toolbar" aria-label="筛选工具">
+      <label class="search-label" for="searchInput">搜索</label>
+      <input id="searchInput" type="search" placeholder="输入单词、中文或例句" autocomplete="off">
+
+      <label class="category-label" for="categorySelect">词性</label>
+      <select id="categorySelect"></select>
+    </section>
+
+    <section class="resources-panel" aria-labelledby="resourcesTitle">
+      <h2 id="resourcesTitle">学习建议</h2>
+      <ul id="learningTips" class="tip-list"></ul>
+      <h3>参考网站</h3>
+      <ul id="learningResources" class="resource-list"></ul>
+    </section>
+
+    <section class="study-panel" aria-live="polite">
+      <div class="word-focus">
+        <div class="word-meta" id="activeCategory"></div>
+        <h2 id="activeWord">请选择单词</h2>
+        <p id="activeMeaning"></p>
+        <p id="activePronunciation"></p>
+        <p id="activeNote"></p>
+        <p id="activeExample"></p>
+        <div class="audio-actions" aria-label="发音工具">
+          <button id="speakButton" type="button">浏览器发音</button>
+          <button id="youdaoButton" type="button">有道美式发音</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="word-list-wrap">
+      <div class="list-header">
+        <h2>词表</h2>
+        <span id="countLabel"></span>
+      </div>
+      <ol id="wordList" class="word-list"></ol>
+    </section>
+  </main>
+
+  <script>
+window.WORD_DATA = [
+  {
+    "word": "abort",
+    "meaning": "中止",
+    "pronunciation": "",
+    "note": "Abort the request when the user leaves the page.",
+    "example": "Abort the request when the user leaves the page.",
+    "category": "动词",
+    "source": "supplemental_words.md#151"
+  },
+  {
+    "word": "abstraction",
+    "meaning": "抽象",
+    "pronunciation": "",
+    "note": "Add an abstraction only when it reduces real complexity.",
+    "example": "Add an abstraction only when it reduces real complexity.",
+    "category": "名词",
+    "source": "supplemental_words.md#119"
+  },
+  {
+    "word": "accessible",
+    "meaning": "可访问的，易访问的",
+    "pronunciation": "",
+    "note": "Make the form accessible by adding labels.",
+    "example": "Make the form accessible by adding labels.",
+    "category": "形容词",
+    "source": "supplemental_words.md#179"
+  },
+  {
+    "word": "accordion",
+    "meaning": "可折叠的，褶叠的",
+    "pronunciation": "/əˈkɔːrdiən/",
+    "note": "设计中可以通过点击按钮将内容折叠或展开",
+    "example": "设计中可以通过点击按钮将内容折叠或展开",
+    "category": "形容词",
+    "source": "2020-01-01-accordion.md"
+  },
+  {
+    "word": "adapter",
+    "meaning": "适配器",
+    "pronunciation": "",
+    "note": "Adapter converts one interface into another interface.",
+    "example": "Adapter converts one interface into another interface.",
+    "category": "名词",
+    "source": "supplemental_words.md#1"
+  },
+  {
+    "word": "agent",
+    "meaning": "智能体，代理程序",
+    "pronunciation": "",
+    "note": "AI agent development",
+    "example": "The agent plans the task and calls tools to finish each step.",
+    "category": "名词",
+    "source": "supplemental_words.md#199"
+  },
+  {
+    "word": "agentic",
+    "meaning": "智能体式的，具备自主行动能力的",
+    "pronunciation": "",
+    "note": "agentic workflow",
+    "example": "An agentic workflow can decide which tool to use next.",
+    "category": "形容词",
+    "source": "supplemental_words.md#200"
+  },
+  {
+    "word": "aggregate",
+    "meaning": "聚合，整合",
+    "pronunciation": "/ˈæɡrɪɡət/",
+    "note": "将多条信息聚合到一起，比如聚合类的新闻客户端",
+    "example": "将多条信息聚合到一起，比如聚合类的新闻客户端",
+    "category": "动词",
+    "source": "2020-01-01-aggregate.md"
+  },
+  {
+    "word": "aggregation",
+    "meaning": "聚合",
+    "pronunciation": "/ˌæɡrɪˈɡeɪʃn/",
+    "note": "",
+    "example": "The term \"aggregation\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-aggregation.md"
+  },
+  {
+    "word": "agile",
+    "meaning": "敏捷、灵活的",
+    "pronunciation": "/ˈædʒl/",
+    "note": "",
+    "example": "The term \"agile\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-agile.md"
+  },
+  {
+    "word": "agility",
+    "meaning": "敏捷，灵活",
+    "pronunciation": "/əˈdʒɪləti/",
+    "note": "",
+    "example": "The term \"agility\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-agility.md"
+  },
+  {
+    "word": "agnostic",
+    "meaning": "不可知论的",
+    "pronunciation": "/æɡˈnɑːstɪk/",
+    "note": "常用于 language agnostic，即和语言无关。",
+    "example": "常用于 language agnostic，即和语言无关。",
+    "category": "形容词",
+    "source": "2020-01-01-agnostic.md"
+  },
+  {
+    "word": "alignment",
+    "meaning": "对齐",
+    "pronunciation": "",
+    "note": "model alignment",
+    "example": "Alignment helps the model follow user intent and safety rules.",
+    "category": "名词",
+    "source": "supplemental_words.md#201"
+  },
+  {
+    "word": "allocate",
+    "meaning": "分配",
+    "pronunciation": "/ˈæləkeɪt/",
+    "note": "",
+    "example": "The term \"allocate\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-allocate.md"
+  },
+  {
+    "word": "allocation",
+    "meaning": "分配",
+    "pronunciation": "",
+    "note": "Reduce memory allocation in the hot path.",
+    "example": "Reduce memory allocation in the hot path.",
+    "category": "名词",
+    "source": "supplemental_words.md#120"
+  },
+  {
+    "word": "alphabetically",
+    "meaning": "按字母顺序排列地",
+    "pronunciation": "/ˌælfəˈbetɪkli/",
+    "note": "",
+    "example": "The term \"alphabetically\" is important when reading software engineering documentation.",
+    "category": "副词",
+    "source": "2020-01-01-alphabetically.md"
+  },
+  {
+    "word": "amortization",
+    "meaning": "摊销",
+    "pronunciation": "/ˌæmərtəˈzeɪʃn/",
+    "note": "",
+    "example": "The term \"amortization\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-amortization.md"
+  },
+  {
+    "word": "ampersand",
+    "meaning": "和",
+    "pronunciation": "/ˈæmpərsænd/",
+    "note": "\"&\"",
+    "example": "\"&\"",
+    "category": "符号",
+    "source": "2020-01-01-ampersand.md"
+  },
+  {
+    "word": "analogy",
+    "meaning": "类比，比喻",
+    "pronunciation": "/əˈnælədʒi/",
+    "note": "",
+    "example": "The term \"analogy\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-analogy.md"
+  },
+  {
+    "word": "analyze",
+    "meaning": "分析",
+    "pronunciation": "/ˈænəlaɪz/",
+    "note": "",
+    "example": "The term \"analyze\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-analyze.md"
+  },
+  {
+    "word": "angle brackets",
+    "meaning": "尖括号",
+    "pronunciation": "/null/",
+    "note": "\"< >\"",
+    "example": "\"< >\"",
+    "category": "符号",
+    "source": "2020-01-01-angle-brackets.md"
+  },
+  {
+    "word": "annotation",
+    "meaning": "标注",
+    "pronunciation": "",
+    "note": "data annotation",
+    "example": "High-quality annotation improves the training dataset.",
+    "category": "名词",
+    "source": "supplemental_words.md#202"
+  },
+  {
+    "word": "anomaly",
+    "meaning": "异常，反常事物",
+    "pronunciation": "/əˈnɑːməli/",
+    "note": "",
+    "example": "The term \"anomaly\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-anomaly.md"
+  },
+  {
+    "word": "arbitrary",
+    "meaning": "任意的",
+    "pronunciation": "/ˈɑːrbɪtreri/",
+    "note": "",
+    "example": "The term \"arbitrary\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-arbitrary.md"
+  },
+  {
+    "word": "architecture",
+    "meaning": "架构",
+    "pronunciation": "/ˈɑːrkɪtektʃər/",
+    "note": "",
+    "example": "The term \"architecture\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-architecture.md"
+  },
+  {
+    "word": "artifact",
+    "meaning": "构建产物",
+    "pronunciation": "",
+    "note": "Save the test report as a build artifact.",
+    "example": "Save the test report as a build artifact.",
+    "category": "名词",
+    "source": "supplemental_words.md#68"
+  },
+  {
+    "word": "ascent",
+    "meaning": "上升，升序",
+    "pronunciation": "/əˈsent/",
+    "note": "",
+    "example": "The term \"ascent\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-ascent.md"
+  },
+  {
+    "word": "aspect",
+    "meaning": "方面，方向",
+    "pronunciation": "/ˈæspekt/",
+    "note": "",
+    "example": "The term \"aspect\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-aspect.md"
+  },
+  {
+    "word": "asterisk",
+    "meaning": "星号",
+    "pronunciation": "/ˈæstərɪsk/",
+    "note": "\"*\"",
+    "example": "\"*\"",
+    "category": "符号",
+    "source": "2020-01-01-asterisk.md"
+  },
+  {
+    "word": "asynchronous",
+    "meaning": "异步的",
+    "pronunciation": "/eɪˈsɪŋkrənəs/",
+    "note": "",
+    "example": "The term \"asynchronous\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-asynchronous.md"
+  },
+  {
+    "word": "at",
+    "meaning": "邮件符号",
+    "pronunciation": "/æt/",
+    "note": "\"@\"",
+    "example": "\"@\"",
+    "category": "符号",
+    "source": "2020-01-01-at.md"
+  },
+  {
+    "word": "atomic",
+    "meaning": "原子的，不可分割的",
+    "pronunciation": "",
+    "note": "An atomic operation completes fully or not at all.",
+    "example": "An atomic operation completes fully or not at all.",
+    "category": "形容词",
+    "source": "supplemental_words.md#180"
+  },
+  {
+    "word": "attention",
+    "meaning": "注意力机制",
+    "pronunciation": "",
+    "note": "transformer attention",
+    "example": "Attention lets the model focus on relevant tokens.",
+    "category": "名词",
+    "source": "supplemental_words.md#203"
+  },
+  {
+    "word": "attribute",
+    "meaning": "属性",
+    "pronunciation": "",
+    "note": "Read the data attribute from the element.",
+    "example": "Read the data attribute from the element.",
+    "category": "名词",
+    "source": "supplemental_words.md#69"
+  },
+  {
+    "word": "authentication",
+    "meaning": "身份验证",
+    "pronunciation": "/ɔːˌθentɪˈkeɪʃn/",
+    "note": "",
+    "example": "The term \"authentication\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-authentication.md"
+  },
+  {
+    "word": "authentication token",
+    "meaning": "认证令牌",
+    "pronunciation": "",
+    "note": "Rotate the authentication token regularly.",
+    "example": "Rotate the authentication token regularly.",
+    "category": "词组",
+    "source": "supplemental_words.md#121"
+  },
+  {
+    "word": "authorization",
+    "meaning": "授权，认可",
+    "pronunciation": "/ˌɔːθərəˈzeɪʃn/",
+    "note": "",
+    "example": "The term \"authorization\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-authorization.md"
+  },
+  {
+    "word": "autoencoder",
+    "meaning": "自编码器",
+    "pronunciation": "",
+    "note": "neural network architecture",
+    "example": "An autoencoder learns a compressed representation of the input.",
+    "category": "名词",
+    "source": "supplemental_words.md#204"
+  },
+  {
+    "word": "automation",
+    "meaning": "自动化",
+    "pronunciation": "/ˌɔːtəˈmeɪʃn/",
+    "note": "",
+    "example": "The term \"automation\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-automation.md"
+  },
+  {
+    "word": "backlog",
+    "meaning": "待办事项列表，积压任务",
+    "pronunciation": "",
+    "note": "Keep the product backlog ordered by business value.",
+    "example": "Keep the product backlog ordered by business value.",
+    "category": "名词",
+    "source": "supplemental_words.md#2"
+  },
+  {
+    "word": "backslash",
+    "meaning": "反斜线",
+    "pronunciation": "/ˈbækslæʃ/",
+    "note": "\"\\\\\"",
+    "example": "\"\\\\\"",
+    "category": "符号",
+    "source": "2020-01-01-backslash.md"
+  },
+  {
+    "word": "backward compatible",
+    "meaning": "向后兼容的",
+    "pronunciation": "",
+    "note": "Keep the API backward compatible for existing clients.",
+    "example": "Keep the API backward compatible for existing clients.",
+    "category": "形容词",
+    "source": "supplemental_words.md#181"
+  },
+  {
+    "word": "bandwidth",
+    "meaning": "带宽，多余时间（人力）",
+    "pronunciation": "/ˈbændwɪdθ/",
+    "note": "后者意思是咨询有没有足够的资源或时间来完成某件事情",
+    "example": "后者意思是咨询有没有足够的资源或时间来完成某件事情",
+    "category": "名词",
+    "source": "2020-01-01-bandwidth.md"
+  },
+  {
+    "word": "benchmark",
+    "meaning": "基准测试",
+    "pronunciation": "",
+    "note": "Run a benchmark before and after the optimization.",
+    "example": "Run a benchmark before and after the optimization.",
+    "category": "名词",
+    "source": "supplemental_words.md#3"
+  },
+  {
+    "word": "binary",
+    "meaning": "二进制，可执行文件",
+    "pronunciation": "",
+    "note": "The release pipeline uploads the final binary.",
+    "example": "The release pipeline uploads the final binary.",
+    "category": "名词",
+    "source": "supplemental_words.md#4"
+  },
+  {
+    "word": "bind",
+    "meaning": "绑定",
+    "pronunciation": "",
+    "note": "Bind the event handler to the button.",
+    "example": "Bind the event handler to the button.",
+    "category": "动词",
+    "source": "supplemental_words.md#152"
+  },
+  {
+    "word": "BIOS",
+    "meaning": "基本输入输出系统",
+    "pronunciation": "/null/",
+    "note": "Basic Input Output System",
+    "example": "Basic Input Output System",
+    "category": "缩写",
+    "source": "2022-07-10-bios.md"
+  },
+  {
+    "word": "blacklist",
+    "meaning": "黑名单",
+    "pronunciation": "",
+    "note": "Block malicious addresses with a blacklist.",
+    "example": "Block malicious addresses with a blacklist.",
+    "category": "名词",
+    "source": "supplemental_words.md#150"
+  },
+  {
+    "word": "blocking",
+    "meaning": "阻塞的",
+    "pronunciation": "",
+    "note": "Avoid blocking operations on the UI thread.",
+    "example": "Avoid blocking operations on the UI thread.",
+    "category": "形容词",
+    "source": "supplemental_words.md#182"
+  },
+  {
+    "word": "blue-green deployment",
+    "meaning": "蓝绿部署",
+    "pronunciation": "",
+    "note": "Blue-green deployment keeps two production environments.",
+    "example": "Blue-green deployment keeps two production environments.",
+    "category": "词组",
+    "source": "supplemental_words.md#122"
+  },
+  {
+    "word": "bogus",
+    "meaning": "假的，伪造",
+    "pronunciation": "/ˈboʊɡəs/",
+    "note": "",
+    "example": "The term \"bogus\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-bogus.md"
+  },
+  {
+    "word": "bootstrap",
+    "meaning": "启动，引导",
+    "pronunciation": "",
+    "note": "Bootstrap the application before loading plugins.",
+    "example": "Bootstrap the application before loading plugins.",
+    "category": "动词",
+    "source": "supplemental_words.md#5"
+  },
+  {
+    "word": "bottleneck",
+    "meaning": "瓶颈",
+    "pronunciation": "/ˈbɑːtlnek/",
+    "note": "",
+    "example": "The term \"bottleneck\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-bottleneck.md"
+  },
+  {
+    "word": "branch",
+    "meaning": "分支",
+    "pronunciation": "",
+    "note": "Create a branch for the feature.",
+    "example": "Create a branch for the feature.",
+    "category": "名词",
+    "source": "supplemental_words.md#70"
+  },
+  {
+    "word": "build script",
+    "meaning": "构建脚本",
+    "pronunciation": "",
+    "note": "The build script copies assets into the output directory.",
+    "example": "The build script copies assets into the output directory.",
+    "category": "词组",
+    "source": "supplemental_words.md#123"
+  },
+  {
+    "word": "bundle",
+    "meaning": "打包产物",
+    "pronunciation": "",
+    "note": "Reduce the bundle size to improve loading speed.",
+    "example": "Reduce the bundle size to improve loading speed.",
+    "category": "名词",
+    "source": "supplemental_words.md#71"
+  },
+  {
+    "word": "cache",
+    "meaning": "缓存",
+    "pronunciation": "",
+    "note": "Clear the cache when the schema changes.",
+    "example": "Clear the cache when the schema changes.",
+    "category": "名词",
+    "source": "supplemental_words.md#6"
+  },
+  {
+    "word": "call stack",
+    "meaning": "调用栈",
+    "pronunciation": "",
+    "note": "The call stack shows nested function calls.",
+    "example": "The call stack shows nested function calls.",
+    "category": "词组",
+    "source": "supplemental_words.md#124"
+  },
+  {
+    "word": "callback",
+    "meaning": "回调函数",
+    "pronunciation": "",
+    "note": "The callback runs after the request finishes.",
+    "example": "The callback runs after the request finishes.",
+    "category": "名词",
+    "source": "supplemental_words.md#7"
+  },
+  {
+    "word": "canonical",
+    "meaning": "规范的，标准的",
+    "pronunciation": "",
+    "note": "Store the canonical URL for each page.",
+    "example": "Store the canonical URL for each page.",
+    "category": "形容词",
+    "source": "supplemental_words.md#183"
+  },
+  {
+    "word": "capacity",
+    "meaning": "能力、容量",
+    "pronunciation": "/kəˈpæsəti/",
+    "note": "",
+    "example": "The term \"capacity\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-capacity.md"
+  },
+  {
+    "word": "capture",
+    "meaning": "捕捉、抓取",
+    "pronunciation": "/ˈkæptʃər/",
+    "note": "",
+    "example": "The term \"capture\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-capture.md"
+  },
+  {
+    "word": "caret",
+    "meaning": "折音号",
+    "pronunciation": "/ˈkærət/",
+    "note": "\"^\"",
+    "example": "\"^\"",
+    "category": "符号",
+    "source": "2020-01-01-caret.md"
+  },
+  {
+    "word": "catastrophic failover",
+    "meaning": "灾难性故障转移",
+    "pronunciation": "/null/",
+    "note": "",
+    "example": "The term \"catastrophic failover\" is important when reading software engineering documentation.",
+    "category": "词组",
+    "source": "2020-01-01-catastrophic-failover.md"
+  },
+  {
+    "word": "caveats",
+    "meaning": "注意事项",
+    "pronunciation": "/ˈkæviæt/",
+    "note": "",
+    "example": "The term \"caveats\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-caveats.md"
+  },
+  {
+    "word": "certificate",
+    "meaning": "证书",
+    "pronunciation": "",
+    "note": "Renew the TLS certificate before it expires.",
+    "example": "Renew the TLS certificate before it expires.",
+    "category": "名词",
+    "source": "supplemental_words.md#72"
+  },
+  {
+    "word": "chain of thought",
+    "meaning": "思维链",
+    "pronunciation": "",
+    "note": "reasoning process",
+    "example": "Chain of thought can expose intermediate reasoning steps.",
+    "category": "词组",
+    "source": "supplemental_words.md#205"
+  },
+  {
+    "word": "characteristic",
+    "meaning": "特征，特性",
+    "pronunciation": "/ˌkærəktəˈrɪstɪk/",
+    "note": "",
+    "example": "The term \"characteristic\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-characteristic.md"
+  },
+  {
+    "word": "charset",
+    "meaning": "字符集",
+    "pronunciation": "",
+    "note": "Set the charset to UTF-8.",
+    "example": "Set the charset to UTF-8.",
+    "category": "名词",
+    "source": "supplemental_words.md#73"
+  },
+  {
+    "word": "checkpoint",
+    "meaning": "检查点",
+    "pronunciation": "",
+    "note": "Save a checkpoint before running the migration.",
+    "example": "Save a checkpoint before running the migration.",
+    "category": "名词",
+    "source": "supplemental_words.md#8"
+  },
+  {
+    "word": "checksum",
+    "meaning": "校验和",
+    "pronunciation": "",
+    "note": "Compare the checksum to verify the downloaded file.",
+    "example": "Compare the checksum to verify the downloaded file.",
+    "category": "名词",
+    "source": "supplemental_words.md#9"
+  },
+  {
+    "word": "chunk",
+    "meaning": "数据块，代码块",
+    "pronunciation": "",
+    "note": "The bundler splits the app into smaller chunks.",
+    "example": "The bundler splits the app into smaller chunks.",
+    "category": "名词",
+    "source": "supplemental_words.md#10"
+  },
+  {
+    "word": "chunking",
+    "meaning": "分块",
+    "pronunciation": "",
+    "note": "RAG document processing",
+    "example": "Chunking splits long documents into searchable passages.",
+    "category": "名词",
+    "source": "supplemental_words.md#206"
+  },
+  {
+    "word": "class diagram",
+    "meaning": "类图",
+    "pronunciation": "",
+    "note": "UML diagram",
+    "example": "A class diagram shows classes, attributes, methods, and relationships.",
+    "category": "词组",
+    "source": "supplemental_words.md#249"
+  },
+  {
+    "word": "classifier",
+    "meaning": "分类器",
+    "pronunciation": "",
+    "note": "machine learning model",
+    "example": "The classifier predicts whether a message is spam.",
+    "category": "名词",
+    "source": "supplemental_words.md#207"
+  },
+  {
+    "word": "CLI",
+    "meaning": "命令行界面",
+    "pronunciation": "/null/",
+    "note": "Command Line Interface",
+    "example": "Command Line Interface",
+    "category": "缩写",
+    "source": "2020-01-01-cli.md"
+  },
+  {
+    "word": "client",
+    "meaning": "客户端",
+    "pronunciation": "",
+    "note": "The client sends an HTTP request to the server.",
+    "example": "The client sends an HTTP request to the server.",
+    "category": "名词",
+    "source": "supplemental_words.md#11"
+  },
+  {
+    "word": "cluster",
+    "meaning": "集群",
+    "pronunciation": "/ˈklʌstər/",
+    "note": "",
+    "example": "The term \"cluster\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-cluster.md"
+  },
+  {
+    "word": "codec",
+    "meaning": "编解码器",
+    "pronunciation": "",
+    "note": "The video cannot play without the right codec.",
+    "example": "The video cannot play without the right codec.",
+    "category": "名词",
+    "source": "supplemental_words.md#12"
+  },
+  {
+    "word": "colon",
+    "meaning": "冒号",
+    "pronunciation": "/ˈkoʊlən/",
+    "note": "\":\"",
+    "example": "\":\"",
+    "category": "符号",
+    "source": "2020-01-01-colon.md"
+  },
+  {
+    "word": "comma",
+    "meaning": "逗号",
+    "pronunciation": "/ˈkɑːmə/",
+    "note": "\",\"",
+    "example": "\",\"",
+    "category": "符号",
+    "source": "2020-01-01-comma.md"
+  },
+  {
+    "word": "command line",
+    "meaning": "命令行",
+    "pronunciation": "",
+    "note": "Run the tool from the command line.",
+    "example": "Run the tool from the command line.",
+    "category": "词组",
+    "source": "supplemental_words.md#125"
+  },
+  {
+    "word": "commit",
+    "meaning": "提交",
+    "pronunciation": "",
+    "note": "Write a commit message that explains the change.",
+    "example": "Write a commit message that explains the change.",
+    "category": "名词",
+    "source": "supplemental_words.md#74"
+  },
+  {
+    "word": "compile",
+    "meaning": "编译",
+    "pronunciation": "",
+    "note": "Compile the source code before packaging.",
+    "example": "Compile the source code before packaging.",
+    "category": "动词",
+    "source": "supplemental_words.md#153"
+  },
+  {
+    "word": "compiler",
+    "meaning": "编译器",
+    "pronunciation": "",
+    "note": "The compiler reports syntax errors.",
+    "example": "The compiler reports syntax errors.",
+    "category": "名词",
+    "source": "supplemental_words.md#75"
+  },
+  {
+    "word": "complexity",
+    "meaning": "复杂性",
+    "pronunciation": "/kəmˈpleksəti/",
+    "note": "",
+    "example": "The term \"complexity\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-complexity.md"
+  },
+  {
+    "word": "compliance",
+    "meaning": "合规",
+    "pronunciation": "/kəmˈplaɪəns/",
+    "note": "",
+    "example": "The term \"compliance\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-compliance.md"
+  },
+  {
+    "word": "component",
+    "meaning": "组件",
+    "pronunciation": "",
+    "note": "Keep each UI component focused on one responsibility.",
+    "example": "Keep each UI component focused on one responsibility.",
+    "category": "名词",
+    "source": "supplemental_words.md#13"
+  },
+  {
+    "word": "composition",
+    "meaning": "组合",
+    "pronunciation": "",
+    "note": "UML relationship or design technique",
+    "example": "Composition models a strong whole-part relationship.",
+    "category": "名词",
+    "source": "supplemental_words.md#252"
+  },
+  {
+    "word": "comprehensive",
+    "meaning": "综合的，广泛的",
+    "pronunciation": "/ˌkɑːmprɪˈhensɪv/",
+    "note": "",
+    "example": "The term \"comprehensive\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-comprehensive.md"
+  },
+  {
+    "word": "compress",
+    "meaning": "压缩",
+    "pronunciation": "",
+    "note": "Compress static assets before deployment.",
+    "example": "Compress static assets before deployment.",
+    "category": "动词",
+    "source": "supplemental_words.md#154"
+  },
+  {
+    "word": "compromise",
+    "meaning": "泄漏，破解",
+    "pronunciation": "/ˈkɑːmprəmaɪz/",
+    "note": "",
+    "example": "The term \"compromise\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-compromise.md"
+  },
+  {
+    "word": "concatenate",
+    "meaning": "连接",
+    "pronunciation": "/kɑnˈkætəˌnet/",
+    "note": "",
+    "example": "The term \"concatenate\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-concatenate.md"
+  },
+  {
+    "word": "concrete",
+    "meaning": "具体的、有形的",
+    "pronunciation": "/ˈkɑːnkriːt/",
+    "note": "",
+    "example": "The term \"concrete\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-concrete.md"
+  },
+  {
+    "word": "concurrent",
+    "meaning": "并发的，同时发生的",
+    "pronunciation": "/kənˈkɜːrənt/",
+    "note": "",
+    "example": "The term \"concurrent\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-concurrent.md"
+  },
+  {
+    "word": "confidentiality",
+    "meaning": "保密性",
+    "pronunciation": "/ˌkɑːnfɪˌdenʃiˈæləti/",
+    "note": "",
+    "example": "The term \"confidentiality\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-confidentiality.md"
+  },
+  {
+    "word": "configuration",
+    "meaning": "配置",
+    "pronunciation": "",
+    "note": "Store environment-specific configuration outside the code.",
+    "example": "Store environment-specific configuration outside the code.",
+    "category": "名词",
+    "source": "supplemental_words.md#14"
+  },
+  {
+    "word": "configure",
+    "meaning": "配置",
+    "pronunciation": "",
+    "note": "Configure the server with environment variables.",
+    "example": "Configure the server with environment variables.",
+    "category": "动词",
+    "source": "supplemental_words.md#155"
+  },
+  {
+    "word": "connection string",
+    "meaning": "连接字符串",
+    "pronunciation": "",
+    "note": "Keep the connection string out of source control.",
+    "example": "Keep the connection string out of source control.",
+    "category": "词组",
+    "source": "supplemental_words.md#126"
+  },
+  {
+    "word": "constant",
+    "meaning": "常数，恒量",
+    "pronunciation": "/ˈkɑːnstənt/",
+    "note": "",
+    "example": "The term \"constant\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-constant.md"
+  },
+  {
+    "word": "constraint",
+    "meaning": "约束",
+    "pronunciation": "/kənˈstreɪnt/",
+    "note": "",
+    "example": "The term \"constraint\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-constraint.md"
+  },
+  {
+    "word": "consultative",
+    "meaning": "咨询的",
+    "pronunciation": "/kənˈsʌltətɪv/",
+    "note": "",
+    "example": "The term \"consultative\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-consultative.md"
+  },
+  {
+    "word": "consumption",
+    "meaning": "消耗",
+    "pronunciation": "/kənˈsʌmpʃn/",
+    "note": "",
+    "example": "The term \"consumption\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-consumption.md"
+  },
+  {
+    "word": "container",
+    "meaning": "容器",
+    "pronunciation": "",
+    "note": "A container packages the application with its runtime.",
+    "example": "A container packages the application with its runtime.",
+    "category": "名词",
+    "source": "supplemental_words.md#15"
+  },
+  {
+    "word": "context engineering",
+    "meaning": "上下文工程",
+    "pronunciation": "",
+    "note": "LLM application design",
+    "example": "Context engineering decides what information the model should see.",
+    "category": "词组",
+    "source": "supplemental_words.md#244"
+  },
+  {
+    "word": "context window",
+    "meaning": "上下文窗口",
+    "pronunciation": "",
+    "note": "LLM input limit",
+    "example": "The context window limits how much text the model can read at once.",
+    "category": "词组",
+    "source": "supplemental_words.md#208"
+  },
+  {
+    "word": "continuous delivery",
+    "meaning": "持续交付",
+    "pronunciation": "",
+    "note": "Continuous delivery keeps releases low-risk.",
+    "example": "Continuous delivery keeps releases low-risk.",
+    "category": "词组",
+    "source": "supplemental_words.md#127"
+  },
+  {
+    "word": "continuous integration",
+    "meaning": "持续集成",
+    "pronunciation": "",
+    "note": "Continuous integration runs tests after each commit.",
+    "example": "Continuous integration runs tests after each commit.",
+    "category": "词组",
+    "source": "supplemental_words.md#128"
+  },
+  {
+    "word": "contrast",
+    "meaning": "对比",
+    "pronunciation": "/ˈkɑːntræst/",
+    "note": "",
+    "example": "The term \"contrast\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-contrast.md"
+  },
+  {
+    "word": "corpus",
+    "meaning": "语料库",
+    "pronunciation": "",
+    "note": "training or retrieval data",
+    "example": "The corpus contains manuals, tickets, and design documents.",
+    "category": "名词",
+    "source": "supplemental_words.md#209"
+  },
+  {
+    "word": "cost-effective",
+    "meaning": "有成本效益的，合算的",
+    "pronunciation": "/ˌkɔːst ɪˈfektɪv/",
+    "note": "",
+    "example": "The term \"cost-effective\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-cost-effective.md"
+  },
+  {
+    "word": "cost-efficient",
+    "meaning": "有成本效益的，合算的",
+    "pronunciation": "/ˈkɔstiˈfiʃənt/",
+    "note": "",
+    "example": "The term \"cost-efficient\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-cost-efficient .md"
+  },
+  {
+    "word": "credential",
+    "meaning": "凭据",
+    "pronunciation": "",
+    "note": "Never commit credentials to the repository.",
+    "example": "Never commit credentials to the repository.",
+    "category": "名词",
+    "source": "supplemental_words.md#16"
+  },
+  {
+    "word": "critical",
+    "meaning": "关键的，重要的，批评的",
+    "pronunciation": "/ˈkrɪtɪkl/",
+    "note": "",
+    "example": "The term \"critical\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-critical.md"
+  },
+  {
+    "word": "crucial",
+    "meaning": "重要的，决定性的",
+    "pronunciation": "/ˈkruːʃl/",
+    "note": "",
+    "example": "The term \"crucial\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-crucial.md"
+  },
+  {
+    "word": "curly brackets",
+    "meaning": "花括号",
+    "pronunciation": "/null/",
+    "note": "\"{ }\"",
+    "example": "\"{ }\"",
+    "category": "符号",
+    "source": "2020-01-01-curly-brackets.md"
+  },
+  {
+    "word": "customized",
+    "meaning": "定制的，个性化的",
+    "pronunciation": "/ˈkʌstəmaɪzd/",
+    "note": "",
+    "example": "The term \"customized\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-customized.md"
+  },
+  {
+    "word": "daemon",
+    "meaning": "守护进程",
+    "pronunciation": "",
+    "note": "The daemon runs in the background.",
+    "example": "The daemon runs in the background.",
+    "category": "名词",
+    "source": "supplemental_words.md#17"
+  },
+  {
+    "word": "dash",
+    "meaning": "破折号",
+    "pronunciation": "/dæʃ/",
+    "note": "\"—\"",
+    "example": "\"—\"",
+    "category": "符号",
+    "source": "2020-01-01-dash.md"
+  },
+  {
+    "word": "dashboard",
+    "meaning": "仪表盘，控制面板",
+    "pronunciation": "",
+    "note": "The dashboard shows service health and traffic.",
+    "example": "The dashboard shows service health and traffic.",
+    "category": "名词",
+    "source": "supplemental_words.md#18"
+  },
+  {
+    "word": "data model",
+    "meaning": "数据模型",
+    "pronunciation": "",
+    "note": "Update the data model before changing the UI.",
+    "example": "Update the data model before changing the UI.",
+    "category": "词组",
+    "source": "supplemental_words.md#129"
+  },
+  {
+    "word": "data sovereignty",
+    "meaning": "数据主权",
+    "pronunciation": "/null/",
+    "note": "数据主权指的是在该国或地区采集的数据应当归属于当地政府且需服从当地法律法规",
+    "example": "数据主权指的是在该国或地区采集的数据应当归属于当地政府且需服从当地法律法规",
+    "category": "词组",
+    "source": "2020-01-01-data-sovereignty.md"
+  },
+  {
+    "word": "database",
+    "meaning": "数据库",
+    "pronunciation": "/ˈdɑːtəbeɪs/",
+    "note": "",
+    "example": "The term \"database\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2022-07-10-database.md"
+  },
+  {
+    "word": "dataclass",
+    "meaning": "数据类",
+    "pronunciation": "",
+    "note": "Python feature",
+    "example": "A dataclass reduces boilerplate for simple data containers.",
+    "category": "名词",
+    "source": "supplemental_words.md#254"
+  },
+  {
+    "word": "dead letter queue",
+    "meaning": "死信队列",
+    "pronunciation": "/null/",
+    "note": "在队列服务中，那些无法发送的信息将被送至死信队列",
+    "example": "在队列服务中，那些无法发送的信息将被送至死信队列",
+    "category": "词组",
+    "source": "2020-01-01-dead-letter-queue.md"
+  },
+  {
+    "word": "debug",
+    "meaning": "调试",
+    "pronunciation": "/ˈdiːbʌɡ/",
+    "note": "",
+    "example": "The term \"debug\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2022-07-10-debug.md"
+  },
+  {
+    "word": "declarative",
+    "meaning": "声明式",
+    "pronunciation": "/dɪˌkler.ə.t̬ɪv/",
+    "note": "",
+    "example": "The term \"declarative\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-declarative.md"
+  },
+  {
+    "word": "decoder",
+    "meaning": "解码器",
+    "pronunciation": "",
+    "note": "neural network component",
+    "example": "The decoder generates the next token from hidden states.",
+    "category": "名词",
+    "source": "supplemental_words.md#210"
+  },
+  {
+    "word": "decorator",
+    "meaning": "装饰器",
+    "pronunciation": "",
+    "note": "A decorator can add behavior to a class.",
+    "example": "A decorator can add behavior to a class.",
+    "category": "名词",
+    "source": "supplemental_words.md#76"
+  },
+  {
+    "word": "decouple",
+    "meaning": "解耦，使分离",
+    "pronunciation": "/diːˈkʌpl/",
+    "note": "",
+    "example": "The term \"decouple\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-decouple.md"
+  },
+  {
+    "word": "dedicated",
+    "meaning": "专属的",
+    "pronunciation": "/ˈdedɪkeɪtɪd/",
+    "note": "",
+    "example": "The term \"dedicated\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-dedicated.md"
+  },
+  {
+    "word": "degradation",
+    "meaning": "降级",
+    "pronunciation": "/ˌdeɡrəˈdeɪʃn/",
+    "note": "",
+    "example": "The term \"degradation\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-degradation.md"
+  },
+  {
+    "word": "delimiter",
+    "meaning": "分隔符",
+    "pronunciation": "",
+    "note": "Split the string by the delimiter.",
+    "example": "Split the string by the delimiter.",
+    "category": "名词",
+    "source": "supplemental_words.md#77"
+  },
+  {
+    "word": "delivery",
+    "meaning": "交付",
+    "pronunciation": "/dɪˈlɪvəri/",
+    "note": "",
+    "example": "The term \"delivery\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-delivery.md"
+  },
+  {
+    "word": "dependency",
+    "meaning": "依赖项",
+    "pronunciation": "",
+    "note": "Update dependencies after reviewing the changelog.",
+    "example": "Update dependencies after reviewing the changelog.",
+    "category": "名词",
+    "source": "supplemental_words.md#19"
+  },
+  {
+    "word": "dependency injection",
+    "meaning": "依赖注入",
+    "pronunciation": "",
+    "note": "Dependency injection makes code easier to test.",
+    "example": "Dependency injection makes code easier to test.",
+    "category": "词组",
+    "source": "supplemental_words.md#130"
+  },
+  {
+    "word": "deploy",
+    "meaning": "部署",
+    "pronunciation": "",
+    "note": "Deploy the new version after tests pass.",
+    "example": "Deploy the new version after tests pass.",
+    "category": "动词",
+    "source": "supplemental_words.md#156"
+  },
+  {
+    "word": "deployment",
+    "meaning": "部署",
+    "pronunciation": "",
+    "note": "Deployment should be repeatable and reversible.",
+    "example": "Deployment should be repeatable and reversible.",
+    "category": "名词",
+    "source": "supplemental_words.md#20"
+  },
+  {
+    "word": "deprecated",
+    "meaning": "弃用的",
+    "pronunciation": "/ˈdɛprəˌketɪd/",
+    "note": "",
+    "example": "The term \"deprecated\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-deprecated.md"
+  },
+  {
+    "word": "depreciation",
+    "meaning": "折旧，贬值",
+    "pronunciation": "/dɪˌpriːʃiˈeɪʃn/",
+    "note": "",
+    "example": "The term \"depreciation\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-depreciation.md"
+  },
+  {
+    "word": "descent",
+    "meaning": "下降，降序",
+    "pronunciation": "/dɪˈsent/",
+    "note": "",
+    "example": "The term \"descent\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-descent.md"
+  },
+  {
+    "word": "descriptor",
+    "meaning": "描述符",
+    "pronunciation": "",
+    "note": "The file descriptor points to an open file.",
+    "example": "The file descriptor points to an open file.",
+    "category": "名词",
+    "source": "supplemental_words.md#78"
+  },
+  {
+    "word": "deserialize",
+    "meaning": "反序列化",
+    "pronunciation": "",
+    "note": "Deserialize the JSON payload into an object.",
+    "example": "Deserialize the JSON payload into an object.",
+    "category": "动词",
+    "source": "supplemental_words.md#157"
+  },
+  {
+    "word": "design pattern",
+    "meaning": "设计模式",
+    "pronunciation": "",
+    "note": "reusable software design solution",
+    "example": "A design pattern gives a common solution to a recurring design problem.",
+    "category": "词组",
+    "source": "supplemental_words.md#245"
+  },
+  {
+    "word": "design patterns",
+    "meaning": "设计模式",
+    "pronunciation": "/null/",
+    "note": "解决代码问题的套路方法",
+    "example": "解决代码问题的套路方法",
+    "category": "词组",
+    "source": "2021-10-01-design-partten.md"
+  },
+  {
+    "word": "design system",
+    "meaning": "设计系统",
+    "pronunciation": "",
+    "note": "Follow the design system for spacing and colors.",
+    "example": "Follow the design system for spacing and colors.",
+    "category": "词组",
+    "source": "supplemental_words.md#131"
+  },
+  {
+    "word": "deterministic",
+    "meaning": "确定性的",
+    "pronunciation": "",
+    "note": "Deterministic tests produce the same result every run.",
+    "example": "Deterministic tests produce the same result every run.",
+    "category": "形容词",
+    "source": "supplemental_words.md#184"
+  },
+  {
+    "word": "differentiate",
+    "meaning": "区分",
+    "pronunciation": "/ˌdɪfəˈrenʃieɪt/",
+    "note": "",
+    "example": "The term \"differentiate\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-differentiate.md"
+  },
+  {
+    "word": "digest",
+    "meaning": "摘要值",
+    "pronunciation": "",
+    "note": "The digest changes when the file changes.",
+    "example": "The digest changes when the file changes.",
+    "category": "名词",
+    "source": "supplemental_words.md#79"
+  },
+  {
+    "word": "directive",
+    "meaning": "指令",
+    "pronunciation": "",
+    "note": "The directive controls how the compiler handles this block.",
+    "example": "The directive controls how the compiler handles this block.",
+    "category": "名词",
+    "source": "supplemental_words.md#80"
+  },
+  {
+    "word": "disclaimer",
+    "meaning": "免责声明",
+    "pronunciation": "/dɪˈskleɪ.mɚ/",
+    "note": "",
+    "example": "The term \"disclaimer\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-disclaimer.md"
+  },
+  {
+    "word": "discrepancy",
+    "meaning": "差异，不符",
+    "pronunciation": "/dɪˈskrepənsi/",
+    "note": "",
+    "example": "The term \"discrepancy\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2025-05-26-discrepancy.md"
+  },
+  {
+    "word": "discretely",
+    "meaning": "离散地，分离地",
+    "pronunciation": "/dɪˈskriːtli/",
+    "note": "",
+    "example": "The term \"discretely\" is important when reading software engineering documentation.",
+    "category": "副词",
+    "source": "2020-01-01-discretely.md"
+  },
+  {
+    "word": "dispatcher",
+    "meaning": "分发器",
+    "pronunciation": "",
+    "note": "The dispatcher sends events to registered handlers.",
+    "example": "The dispatcher sends events to registered handlers.",
+    "category": "名词",
+    "source": "supplemental_words.md#81"
+  },
+  {
+    "word": "distinction",
+    "meaning": "区别、差别",
+    "pronunciation": "/dɪˈstɪŋkʃn/",
+    "note": "",
+    "example": "The term \"distinction\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-distinction.md"
+  },
+  {
+    "word": "distributed",
+    "meaning": "分布式的",
+    "pronunciation": "",
+    "note": "Distributed systems need careful failure handling.",
+    "example": "Distributed systems need careful failure handling.",
+    "category": "形容词",
+    "source": "supplemental_words.md#185"
+  },
+  {
+    "word": "diversified",
+    "meaning": "多样化的",
+    "pronunciation": "/daɪˈvɜrsɪfaɪd/",
+    "note": "",
+    "example": "The term \"diversified\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-diversified.md"
+  },
+  {
+    "word": "dollar sign",
+    "meaning": "美元符号",
+    "pronunciation": "/null/",
+    "note": "\"$\"",
+    "example": "\"$\"",
+    "category": "符号",
+    "source": "2020-01-01-dollar-sign.md"
+  },
+  {
+    "word": "DOM",
+    "meaning": "文档对象模型",
+    "pronunciation": "/null/",
+    "note": "Document Object Model",
+    "example": "Document Object Model",
+    "category": "缩写",
+    "source": "2022-07-10-dom.md"
+  },
+  {
+    "word": "double quotation mark",
+    "meaning": "双引号",
+    "pronunciation": "/null/",
+    "note": "'\"'",
+    "example": "'\"'",
+    "category": "符号",
+    "source": "2020-01-01-double-quotation-mark.md"
+  },
+  {
+    "word": "downwards arrow",
+    "meaning": "向下箭头",
+    "pronunciation": "/null/",
+    "note": "\"↓\"",
+    "example": "\"↓\"",
+    "category": "符号",
+    "source": "2020-01-01-downwards-arrow.md"
+  },
+  {
+    "word": "driver",
+    "meaning": "驱动程序",
+    "pronunciation": "",
+    "note": "Install the database driver before connecting.",
+    "example": "Install the database driver before connecting.",
+    "category": "名词",
+    "source": "supplemental_words.md#82"
+  },
+  {
+    "word": "durability",
+    "meaning": "持久性，耐用性",
+    "pronunciation": "/ˌdʊrəˈbɪləti/",
+    "note": "",
+    "example": "The term \"durability\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-durability.md"
+  },
+  {
+    "word": "efficiency",
+    "meaning": "效率",
+    "pronunciation": "/ɪˈfɪʃnsi/",
+    "note": "",
+    "example": "The term \"efficiency\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-efficiency.md"
+  },
+  {
+    "word": "elastic",
+    "meaning": "灵活有弹性的",
+    "pronunciation": "/ɪˈlæstɪk/",
+    "note": "AWS Elastic Compute Cloud (EC2) 有「弹性、伸缩性」的特点",
+    "example": "AWS Elastic Compute Cloud (EC2) 有「弹性、伸缩性」的特点",
+    "category": "形容词",
+    "source": "2020-01-01-elastic.md"
+  },
+  {
+    "word": "elasticity",
+    "meaning": "弹性，灵活性",
+    "pronunciation": "/ˌiːlæˈstɪsəti/",
+    "note": "",
+    "example": "The term \"elasticity\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-elasticity.md"
+  },
+  {
+    "word": "ellipsis",
+    "meaning": "省略号",
+    "pronunciation": "/ɪˈlɪpsɪs/",
+    "note": "\"...\"",
+    "example": "\"...\"",
+    "category": "符号",
+    "source": "2020-01-01-ellipsis.md"
+  },
+  {
+    "word": "embedding",
+    "meaning": "嵌入，向量表示",
+    "pronunciation": "",
+    "note": "vector representation",
+    "example": "An embedding maps text into a vector space.",
+    "category": "名词",
+    "source": "supplemental_words.md#211"
+  },
+  {
+    "word": "embedding model",
+    "meaning": "嵌入模型",
+    "pronunciation": "",
+    "note": "vector search model",
+    "example": "The embedding model converts each paragraph into a vector.",
+    "category": "词组",
+    "source": "supplemental_words.md#212"
+  },
+  {
+    "word": "embrace",
+    "meaning": "拥抱、接受",
+    "pronunciation": "/ɪmˈbreɪs/",
+    "note": "拥抱某种技术",
+    "example": "拥抱某种技术",
+    "category": "动词",
+    "source": "2020-01-01-embrace.md"
+  },
+  {
+    "word": "emulator",
+    "meaning": "模拟器",
+    "pronunciation": "",
+    "note": "Test the mobile app in an emulator.",
+    "example": "Test the mobile app in an emulator.",
+    "category": "名词",
+    "source": "supplemental_words.md#83"
+  },
+  {
+    "word": "encapsulate",
+    "meaning": "压缩、封装",
+    "pronunciation": "/ɪnˈkæpsjuleɪt/",
+    "note": "",
+    "example": "The term \"encapsulate\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-encapsulate.md"
+  },
+  {
+    "word": "encoder",
+    "meaning": "编码器",
+    "pronunciation": "",
+    "note": "The encoder writes text as UTF-8 bytes.",
+    "example": "The encoder writes text as UTF-8 bytes.",
+    "category": "名词",
+    "source": "supplemental_words.md#84"
+  },
+  {
+    "word": "encrypt",
+    "meaning": "加密",
+    "pronunciation": "",
+    "note": "Encrypt sensitive data before storing it.",
+    "example": "Encrypt sensitive data before storing it.",
+    "category": "动词",
+    "source": "supplemental_words.md#158"
+  },
+  {
+    "word": "encryption",
+    "meaning": "加密",
+    "pronunciation": "/ɪnˈkrɪpʃn/",
+    "note": "",
+    "example": "The term \"encryption\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-encryption.md"
+  },
+  {
+    "word": "endpoint",
+    "meaning": "接口端点",
+    "pronunciation": "",
+    "note": "The endpoint returns JSON data.",
+    "example": "The endpoint returns JSON data.",
+    "category": "名词",
+    "source": "supplemental_words.md#21"
+  },
+  {
+    "word": "enumeration",
+    "meaning": "枚举",
+    "pronunciation": "",
+    "note": "Use an enumeration for fixed option values.",
+    "example": "Use an enumeration for fixed option values.",
+    "category": "名词",
+    "source": "supplemental_words.md#85"
+  },
+  {
+    "word": "environment",
+    "meaning": "环境",
+    "pronunciation": "",
+    "note": "Test the feature in a staging environment first.",
+    "example": "Test the feature in a staging environment first.",
+    "category": "名词",
+    "source": "supplemental_words.md#22"
+  },
+  {
+    "word": "ephemeral",
+    "meaning": "短暂性的",
+    "pronunciation": "/ɪˈfemərəl/",
+    "note": "",
+    "example": "The term \"ephemeral\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-ephemeral.md"
+  },
+  {
+    "word": "equal",
+    "meaning": "等于号",
+    "pronunciation": "/ˈiːkwəl/",
+    "note": "\"=\"",
+    "example": "\"=\"",
+    "category": "符号",
+    "source": "2020-01-01-equal.md"
+  },
+  {
+    "word": "equivalent",
+    "meaning": "对等的人（或事物）；",
+    "pronunciation": "/ɪˈkwɪvələnt/",
+    "note": "",
+    "example": "The term \"equivalent\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-equivalent.md"
+  },
+  {
+    "word": "escalate",
+    "meaning": "升级",
+    "pronunciation": "/ˈeskəleɪt/",
+    "note": "",
+    "example": "The term \"escalate\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-escalate.md"
+  },
+  {
+    "word": "evaluation",
+    "meaning": "评价，计算",
+    "pronunciation": "/ɪˌvæljuˈeɪʃn/",
+    "note": "",
+    "example": "The term \"evaluation\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-evaluation.md"
+  },
+  {
+    "word": "evaluation dataset",
+    "meaning": "评估数据集",
+    "pronunciation": "",
+    "note": "model evaluation",
+    "example": "The evaluation dataset contains questions with expected answers.",
+    "category": "词组",
+    "source": "supplemental_words.md#213"
+  },
+  {
+    "word": "evolution",
+    "meaning": "进化、演变",
+    "pronunciation": "/ˌevəˈluːʃn/",
+    "note": "",
+    "example": "The term \"evolution\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-evolution.md"
+  },
+  {
+    "word": "exception",
+    "meaning": "异常",
+    "pronunciation": "",
+    "note": "Catch the exception and return a clear error message.",
+    "example": "Catch the exception and return a clear error message.",
+    "category": "名词",
+    "source": "supplemental_words.md#23"
+  },
+  {
+    "word": "exclamation mark",
+    "meaning": "惊叹号，感叹号",
+    "pronunciation": "/ˌekskləˈmeɪʃn/",
+    "note": "\"!\"",
+    "example": "\"!\"",
+    "category": "符号",
+    "source": "2020-01-01-exclamation-mark.md"
+  },
+  {
+    "word": "executor",
+    "meaning": "执行器",
+    "pronunciation": "",
+    "note": "The executor runs background tasks.",
+    "example": "The executor runs background tasks.",
+    "category": "名词",
+    "source": "supplemental_words.md#86"
+  },
+  {
+    "word": "expenditure",
+    "meaning": "支出，经费",
+    "pronunciation": "/ɪkˈspendɪtʃər/",
+    "note": "",
+    "example": "The term \"expenditure\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-expenditure.md"
+  },
+  {
+    "word": "explicit",
+    "meaning": "明确清楚的",
+    "pronunciation": "/ɪkˈsplɪsɪt/",
+    "note": "",
+    "example": "The term \"explicit\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-explicit.md"
+  },
+  {
+    "word": "expression",
+    "meaning": "表达式",
+    "pronunciation": "/ɪkˈspreʃn/",
+    "note": "",
+    "example": "The term \"expression\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2022-07-10-expression.md"
+  },
+  {
+    "word": "facade",
+    "meaning": "外观，门面",
+    "pronunciation": "",
+    "note": "A facade hides complex subsystem details.",
+    "example": "A facade hides complex subsystem details.",
+    "category": "名词",
+    "source": "supplemental_words.md#87"
+  },
+  {
+    "word": "faceted search",
+    "meaning": "分面搜索",
+    "pronunciation": "/null/",
+    "note": "",
+    "example": "The term \"faceted search\" is important when reading software engineering documentation.",
+    "category": "词组",
+    "source": "2020-01-01-faceted-search.md"
+  },
+  {
+    "word": "factory method",
+    "meaning": "工厂方法",
+    "pronunciation": "",
+    "note": "creational design pattern",
+    "example": "The factory method creates objects without exposing concrete classes.",
+    "category": "词组",
+    "source": "supplemental_words.md#246"
+  },
+  {
+    "word": "failback",
+    "meaning": "自动恢复",
+    "pronunciation": "/null/",
+    "note": "在簇（Data Cluster）网络系统中，由于某台服务器要进行维修，需要网络资源和服务暂时重定向到备用系统。在此之后将网络资源和服务器恢复为由原始主机提供的过程，称为自动恢复",
+    "example": "在簇（Data Cluster）网络系统中，由于某台服务器要进行维修，需要网络资源和服务暂时重定向到备用系统。在此之后将网络资源和服务器恢复为由原始主机提供的过程，称为自动恢复",
+    "category": "名词",
+    "source": "2020-01-01-failback.md"
+  },
+  {
+    "word": "failover",
+    "meaning": "失效转移",
+    "pronunciation": "/feilˈəuvər/",
+    "note": "即当 A 无法为客户服务时，系统能够自动地切换，使 B 能够及时地顶上继续为客户提供服务，且客户感觉不到这个为他提供服务的对象已经更换",
+    "example": "即当 A 无法为客户服务时，系统能够自动地切换，使 B 能够及时地顶上继续为客户提供服务，且客户感觉不到这个为他提供服务的对象已经更换",
+    "category": "名词",
+    "source": "2020-01-01-failover.md"
+  },
+  {
+    "word": "fallback",
+    "meaning": "兜底方案，备用方案",
+    "pronunciation": "",
+    "note": "Use a fallback value when the API is unavailable.",
+    "example": "Use a fallback value when the API is unavailable.",
+    "category": "名词",
+    "source": "supplemental_words.md#24"
+  },
+  {
+    "word": "false positive",
+    "meaning": "假阳性",
+    "pronunciation": "/null/",
+    "note": "当你真的没有的时候，别人却说你有。",
+    "example": "当你真的没有的时候，别人却说你有。",
+    "category": "词组",
+    "source": "2020-01-01-false-positive.md"
+  },
+  {
+    "word": "fault tolerance",
+    "meaning": "",
+    "pronunciation": "/null/",
+    "note": "",
+    "example": "The term \"fault tolerance\" is important when reading software engineering documentation.",
+    "category": "词组",
+    "source": "2020-01-01-fault-tolerance.md"
+  },
+  {
+    "word": "feature flag",
+    "meaning": "功能开关",
+    "pronunciation": "",
+    "note": "Use a feature flag to enable the change gradually.",
+    "example": "Use a feature flag to enable the change gradually.",
+    "category": "词组",
+    "source": "supplemental_words.md#132"
+  },
+  {
+    "word": "federation",
+    "meaning": "联合授权",
+    "pronunciation": "/ˌfedəˈreɪʃn/",
+    "note": "",
+    "example": "The term \"federation\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-federation.md"
+  },
+  {
+    "word": "fetch",
+    "meaning": "获取，拉取",
+    "pronunciation": "",
+    "note": "Fetch the latest data from the API.",
+    "example": "Fetch the latest data from the API.",
+    "category": "动词",
+    "source": "supplemental_words.md#159"
+  },
+  {
+    "word": "fine-tuning",
+    "meaning": "微调",
+    "pronunciation": "",
+    "note": "model adaptation",
+    "example": "Fine-tuning adapts a base model to a specific domain.",
+    "category": "名词",
+    "source": "supplemental_words.md#214"
+  },
+  {
+    "word": "fixture",
+    "meaning": "测试夹具，测试数据",
+    "pronunciation": "",
+    "note": "The fixture creates sample users for the test.",
+    "example": "The fixture creates sample users for the test.",
+    "category": "名词",
+    "source": "supplemental_words.md#25"
+  },
+  {
+    "word": "flag",
+    "meaning": "标志位，命令参数",
+    "pronunciation": "",
+    "note": "Pass the debug flag to enable verbose logs.",
+    "example": "Pass the debug flag to enable verbose logs.",
+    "category": "名词",
+    "source": "supplemental_words.md#88"
+  },
+  {
+    "word": "framework",
+    "meaning": "框架",
+    "pronunciation": "",
+    "note": "Choose a framework that fits the project constraints.",
+    "example": "Choose a framework that fits the project constraints.",
+    "category": "名词",
+    "source": "supplemental_words.md#26"
+  },
+  {
+    "word": "furthermore",
+    "meaning": "此外，而且",
+    "pronunciation": "/ˌfɜːrðərˈmɔːr/",
+    "note": "",
+    "example": "The term \"furthermore\" is important when reading software engineering documentation.",
+    "category": "副词",
+    "source": "2020-01-01-furthermore.md"
+  },
+  {
+    "word": "gateway",
+    "meaning": "网关",
+    "pronunciation": "",
+    "note": "The API gateway routes requests to internal services.",
+    "example": "The API gateway routes requests to internal services.",
+    "category": "名词",
+    "source": "supplemental_words.md#27"
+  },
+  {
+    "word": "generator",
+    "meaning": "生成器",
+    "pronunciation": "",
+    "note": "Python iterator",
+    "example": "A generator yields values lazily instead of building a full list.",
+    "category": "名词",
+    "source": "supplemental_words.md#255"
+  },
+  {
+    "word": "glossary",
+    "meaning": "术语",
+    "pronunciation": "/ˈɡlɑːsəri/",
+    "note": "",
+    "example": "The term \"glossary\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-glossary.md"
+  },
+  {
+    "word": "granular",
+    "meaning": "颗粒的",
+    "pronunciation": "/ˈɡrænjələr/",
+    "note": "",
+    "example": "The term \"granular\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-granular.md"
+  },
+  {
+    "word": "greater than",
+    "meaning": "大于号",
+    "pronunciation": "/null/",
+    "note": "\">\"",
+    "example": "\">\"",
+    "category": "符号",
+    "source": "2020-01-01-greater-than.md"
+  },
+  {
+    "word": "GUI",
+    "meaning": "图形用户界面",
+    "pronunciation": "/null/",
+    "note": "Graphical User Interface",
+    "example": "Graphical User Interface",
+    "category": "缩写",
+    "source": "2020-01-01-gui.md"
+  },
+  {
+    "word": "hallucination",
+    "meaning": "幻觉，模型编造",
+    "pronunciation": "",
+    "note": "LLM failure mode",
+    "example": "Retrieval can reduce hallucination by grounding answers in documents.",
+    "category": "名词",
+    "source": "supplemental_words.md#215"
+  },
+  {
+    "word": "handler",
+    "meaning": "处理器",
+    "pronunciation": "",
+    "note": "The handler processes click events.",
+    "example": "The handler processes click events.",
+    "category": "名词",
+    "source": "supplemental_words.md#89"
+  },
+  {
+    "word": "handshake",
+    "meaning": "握手过程",
+    "pronunciation": "",
+    "note": "TLS handshake failed before the page loaded.",
+    "example": "TLS handshake failed before the page loaded.",
+    "category": "名词",
+    "source": "supplemental_words.md#28"
+  },
+  {
+    "word": "hash",
+    "meaning": "井号",
+    "pronunciation": "/hæʃ/",
+    "note": "\"#\"",
+    "example": "\"#\"",
+    "category": "符号",
+    "source": "2020-01-01-hash.md"
+  },
+  {
+    "word": "heap",
+    "meaning": "堆",
+    "pronunciation": "",
+    "note": "Large objects are allocated on the heap.",
+    "example": "Large objects are allocated on the heap.",
+    "category": "名词",
+    "source": "supplemental_words.md#90"
+  },
+  {
+    "word": "heterogeneous",
+    "meaning": "由很多种类组成的，混杂的，各种各样的",
+    "pronunciation": "/ˌhetərəˈdʒiːniəs/",
+    "note": "",
+    "example": "The term \"heterogeneous\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-heterogeneous.md"
+  },
+  {
+    "word": "hierarchical",
+    "meaning": "分层的",
+    "pronunciation": "/ˌhaɪəˈrɑːrkɪkl/",
+    "note": "",
+    "example": "The term \"hierarchical\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-hierarchical.md"
+  },
+  {
+    "word": "homebrew",
+    "meaning": "自制程序",
+    "pronunciation": "/ˌhoʊmˈbruː/",
+    "note": "开源的软件包管理系统，https://brew.sh/",
+    "example": "开源的软件包管理系统，https://brew.sh/",
+    "category": "名词",
+    "source": "2020-01-01-homebrew.md"
+  },
+  {
+    "word": "hook",
+    "meaning": "钩子函数",
+    "pronunciation": "",
+    "note": "Register a hook before saving the record.",
+    "example": "Register a hook before saving the record.",
+    "category": "名词",
+    "source": "supplemental_words.md#91"
+  },
+  {
+    "word": "hostname",
+    "meaning": "主机名",
+    "pronunciation": "",
+    "note": "The hostname must match the certificate.",
+    "example": "The hostname must match the certificate.",
+    "category": "名词",
+    "source": "supplemental_words.md#29"
+  },
+  {
+    "word": "hot reload",
+    "meaning": "热重载",
+    "pronunciation": "",
+    "note": "Hot reload updates the page without restarting the app.",
+    "example": "Hot reload updates the page without restarting the app.",
+    "category": "词组",
+    "source": "supplemental_words.md#133"
+  },
+  {
+    "word": "HTML",
+    "meaning": "超文本标记语言",
+    "pronunciation": "/null/",
+    "note": "HyperText Markup Language",
+    "example": "HyperText Markup Language",
+    "category": "缩写",
+    "source": "2022-07-10-html.md"
+  },
+  {
+    "word": "hydrate",
+    "meaning": "注水，恢复状态",
+    "pronunciation": "",
+    "note": "Hydrate the page with server-rendered data.",
+    "example": "Hydrate the page with server-rendered data.",
+    "category": "动词",
+    "source": "supplemental_words.md#160"
+  },
+  {
+    "word": "hypervisor",
+    "meaning": "虚拟机器监视器（VMM）",
+    "pronunciation": "/ˌhaipəˈvaizə/",
+    "note": "",
+    "example": "The term \"hypervisor\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-hypervisor.md"
+  },
+  {
+    "word": "hyphen",
+    "meaning": "连字符",
+    "pronunciation": "/ˈhaɪfn/",
+    "note": "\"-\"",
+    "example": "\"-\"",
+    "category": "符号",
+    "source": "2020-01-01-hyphen.md"
+  },
+  {
+    "word": "hypothesis",
+    "meaning": "假设",
+    "pronunciation": "/haɪˈpɑːθəsɪs/",
+    "note": "",
+    "example": "The term \"hypothesis\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-hypothesis.md"
+  },
+  {
+    "word": "idempotent",
+    "meaning": "幂等的",
+    "pronunciation": "",
+    "note": "Make retryable operations idempotent.",
+    "example": "Make retryable operations idempotent.",
+    "category": "形容词",
+    "source": "supplemental_words.md#186"
+  },
+  {
+    "word": "immutable",
+    "meaning": "不变的",
+    "pronunciation": "/ɪˈmjuːtəbl/",
+    "note": "",
+    "example": "The term \"immutable\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-immutable.md"
+  },
+  {
+    "word": "impact",
+    "meaning": "绩效，影响",
+    "pronunciation": "/ˈɪmpækt/",
+    "note": "",
+    "example": "The term \"impact\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-impact.md"
+  },
+  {
+    "word": "imperative",
+    "meaning": "命令式",
+    "pronunciation": "/ɪmˈper.ə.t̬ɪv/",
+    "note": "",
+    "example": "The term \"imperative\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-imperative.md"
+  },
+  {
+    "word": "impersonate",
+    "meaning": "扮演，模仿",
+    "pronunciation": "/ɪmˈpɜːrsəneɪt/",
+    "note": "",
+    "example": "The term \"impersonate\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-impersonate.md"
+  },
+  {
+    "word": "implement",
+    "meaning": "实现，执行",
+    "pronunciation": "/ˈɪmplɪment/",
+    "note": "一个类对一个接口的实现",
+    "example": "一个类对一个接口的实现",
+    "category": "动词",
+    "source": "2022-07-10-implement.md"
+  },
+  {
+    "word": "implicit",
+    "meaning": "含蓄的、含糊不清的",
+    "pronunciation": "/ɪmˈplɪs.ɪt/",
+    "note": "浅显好过隐晦(Explicit is better than implicit)",
+    "example": "浅显好过隐晦(Explicit is better than implicit)",
+    "category": "形容词",
+    "source": "2020-01-01-implicit.md"
+  },
+  {
+    "word": "impression",
+    "meaning": "曝光",
+    "pronunciation": "/ɪmˈpreʃn/",
+    "note": "",
+    "example": "The term \"impression\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-impression.md"
+  },
+  {
+    "word": "incentive",
+    "meaning": "激励的，刺激的",
+    "pronunciation": "/ɪnˈsentɪv/",
+    "note": "",
+    "example": "The term \"incentive\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-incentive.md"
+  },
+  {
+    "word": "inception",
+    "meaning": "起始，创立",
+    "pronunciation": "/ɪnˈsepʃn/",
+    "note": "",
+    "example": "The term \"inception\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-inception.md"
+  },
+  {
+    "word": "incident",
+    "meaning": "事故",
+    "pronunciation": "/ˈɪnsɪdənt/",
+    "note": "",
+    "example": "The term \"incident\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-incident.md"
+  },
+  {
+    "word": "indecisive",
+    "meaning": "犹豫不决的",
+    "pronunciation": "/ˌindi'saisiv/",
+    "note": "",
+    "example": "The term \"indecisive\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-indecisive.md"
+  },
+  {
+    "word": "index",
+    "meaning": "索引",
+    "pronunciation": "",
+    "note": "Add an index to speed up this query.",
+    "example": "Add an index to speed up this query.",
+    "category": "名词",
+    "source": "supplemental_words.md#30"
+  },
+  {
+    "word": "inference",
+    "meaning": "推理，模型推断",
+    "pronunciation": "",
+    "note": "model runtime",
+    "example": "Inference begins after the prompt is sent to the model.",
+    "category": "名词",
+    "source": "supplemental_words.md#216"
+  },
+  {
+    "word": "infrastructure",
+    "meaning": "基础设施",
+    "pronunciation": "/ˈɪnfrəstrʌktʃər/",
+    "note": "",
+    "example": "The term \"infrastructure\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-infrastructure.md"
+  },
+  {
+    "word": "inherit",
+    "meaning": "继承",
+    "pronunciation": "/ɪnˈherɪt/",
+    "note": "",
+    "example": "The term \"inherit\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2022-07-10-inherit.md"
+  },
+  {
+    "word": "initialize",
+    "meaning": "初始化",
+    "pronunciation": "",
+    "note": "Initialize the database connection at startup.",
+    "example": "Initialize the database connection at startup.",
+    "category": "动词",
+    "source": "supplemental_words.md#161"
+  },
+  {
+    "word": "initiative",
+    "meaning": "方案、倡议",
+    "pronunciation": "/ɪˈnɪʃətɪv/",
+    "note": "",
+    "example": "The term \"initiative\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-initiative.md"
+  },
+  {
+    "word": "instance",
+    "meaning": "实例",
+    "pronunciation": "",
+    "note": "Start a new instance when traffic increases.",
+    "example": "Start a new instance when traffic increases.",
+    "category": "名词",
+    "source": "supplemental_words.md#31"
+  },
+  {
+    "word": "instantiate",
+    "meaning": "实例化",
+    "pronunciation": "",
+    "note": "Instantiate the service with its dependencies.",
+    "example": "Instantiate the service with its dependencies.",
+    "category": "动词",
+    "source": "supplemental_words.md#162"
+  },
+  {
+    "word": "instruction tuning",
+    "meaning": "指令微调",
+    "pronunciation": "",
+    "note": "LLM training method",
+    "example": "Instruction tuning teaches the model to follow natural language tasks.",
+    "category": "词组",
+    "source": "supplemental_words.md#217"
+  },
+  {
+    "word": "integration",
+    "meaning": "集成，整合",
+    "pronunciation": "/ˌɪntɪˈɡreɪʃn/",
+    "note": "",
+    "example": "The term \"integration\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-integration.md"
+  },
+  {
+    "word": "integration test",
+    "meaning": "集成测试",
+    "pronunciation": "",
+    "note": "An integration test checks multiple modules together.",
+    "example": "An integration test checks multiple modules together.",
+    "category": "词组",
+    "source": "supplemental_words.md#134"
+  },
+  {
+    "word": "integrity",
+    "meaning": "完整性",
+    "pronunciation": "/ɪnˈteɡrəti/",
+    "note": "",
+    "example": "The term \"integrity\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-integrity.md"
+  },
+  {
+    "word": "interaction",
+    "meaning": "交互、相互影响、干涉",
+    "pronunciation": "/ˌɪntərˈækʃn/",
+    "note": "",
+    "example": "The term \"interaction\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-interaction.md"
+  },
+  {
+    "word": "interactive",
+    "meaning": "交互的，人机对话的",
+    "pronunciation": "/ˌɪntərˈæktɪv/",
+    "note": "",
+    "example": "The term \"interactive\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2025-06-12-interactive.md"
+  },
+  {
+    "word": "interface",
+    "meaning": "接口",
+    "pronunciation": "",
+    "note": "Define an interface before implementing the service.",
+    "example": "Define an interface before implementing the service.",
+    "category": "名词",
+    "source": "supplemental_words.md#92"
+  },
+  {
+    "word": "intermittent",
+    "meaning": "间歇的",
+    "pronunciation": "/ˌɪntərˈmɪtənt/",
+    "note": "",
+    "example": "The term \"intermittent\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-intermittent.md"
+  },
+  {
+    "word": "interpreter",
+    "meaning": "解释器",
+    "pronunciation": "",
+    "note": "The interpreter executes the script line by line.",
+    "example": "The interpreter executes the script line by line.",
+    "category": "名词",
+    "source": "supplemental_words.md#93"
+  },
+  {
+    "word": "intervention",
+    "meaning": "介入、干涉",
+    "pronunciation": "/ˌɪntərˈvenʃn/",
+    "note": "",
+    "example": "The term \"intervention\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-intervention.md"
+  },
+  {
+    "word": "introspect",
+    "meaning": "自解析，自省",
+    "pronunciation": "/ˌɪntrə'spɛkt/",
+    "note": "常用于身份认证过程中，对 token 进行自解析。",
+    "example": "常用于身份认证过程中，对 token 进行自解析。",
+    "category": "动词",
+    "source": "2020-01-01-introspect.md"
+  },
+  {
+    "word": "intrusive",
+    "meaning": "侵入式的",
+    "pronunciation": "/ɪnˈtruːsɪv/",
+    "note": "",
+    "example": "The term \"intrusive\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-intrusive.md"
+  },
+  {
+    "word": "intuitive",
+    "meaning": "直觉的",
+    "pronunciation": "/ɪnˈtuːɪtɪv/",
+    "note": "",
+    "example": "The term \"intuitive\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-intuitive.md"
+  },
+  {
+    "word": "invocation",
+    "meaning": "调用",
+    "pronunciation": "",
+    "note": "The invocation failed because the argument was missing.",
+    "example": "The invocation failed because the argument was missing.",
+    "category": "名词",
+    "source": "supplemental_words.md#94"
+  },
+  {
+    "word": "iteration",
+    "meaning": "迭代",
+    "pronunciation": "",
+    "note": "Each iteration should deliver a working increment.",
+    "example": "Each iteration should deliver a working increment.",
+    "category": "名词",
+    "source": "supplemental_words.md#32"
+  },
+  {
+    "word": "iterator",
+    "meaning": "迭代器",
+    "pronunciation": "",
+    "note": "The iterator returns one item at a time.",
+    "example": "The iterator returns one item at a time.",
+    "category": "名词",
+    "source": "supplemental_words.md#95"
+  },
+  {
+    "word": "kernel",
+    "meaning": "内核",
+    "pronunciation": "",
+    "note": "The kernel manages system resources.",
+    "example": "The kernel manages system resources.",
+    "category": "名词",
+    "source": "supplemental_words.md#33"
+  },
+  {
+    "word": "knowledge base",
+    "meaning": "知识库",
+    "pronunciation": "",
+    "note": "searchable information store",
+    "example": "The knowledge base stores project decisions and troubleshooting notes.",
+    "category": "词组",
+    "source": "supplemental_words.md#218"
+  },
+  {
+    "word": "large language model",
+    "meaning": "大语言模型",
+    "pronunciation": "",
+    "note": "LLM",
+    "example": "A large language model predicts and generates natural language.",
+    "category": "词组",
+    "source": "supplemental_words.md#220"
+  },
+  {
+    "word": "latency",
+    "meaning": "延迟",
+    "pronunciation": "/ˈleɪtənsi/",
+    "note": "",
+    "example": "The term \"latency\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-latency.md"
+  },
+  {
+    "word": "latent space",
+    "meaning": "潜在空间",
+    "pronunciation": "",
+    "note": "machine learning representation",
+    "example": "Similar concepts are close together in latent space.",
+    "category": "词组",
+    "source": "supplemental_words.md#219"
+  },
+  {
+    "word": "left arrow",
+    "meaning": "向左箭头",
+    "pronunciation": "/null/",
+    "note": "\"←\"",
+    "example": "\"←\"",
+    "category": "符号",
+    "source": "2020-01-01-left-arrow.md"
+  },
+  {
+    "word": "legacy",
+    "meaning": "遗留的",
+    "pronunciation": "",
+    "note": "The legacy module still handles old data formats.",
+    "example": "The legacy module still handles old data formats.",
+    "category": "形容词",
+    "source": "supplemental_words.md#187"
+  },
+  {
+    "word": "less than",
+    "meaning": "小于号",
+    "pronunciation": "/null/",
+    "note": "\"<\"",
+    "example": "\"<\"",
+    "category": "符号",
+    "source": "2020-01-01-less-than.md"
+  },
+  {
+    "word": "leverage",
+    "meaning": "借用、利用",
+    "pronunciation": "/ˈlevərɪdʒ/",
+    "note": "",
+    "example": "The term \"leverage\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-leverage.md"
+  },
+  {
+    "word": "library",
+    "meaning": "库",
+    "pronunciation": "",
+    "note": "Prefer a stable library for complex parsing.",
+    "example": "Prefer a stable library for complex parsing.",
+    "category": "名词",
+    "source": "supplemental_words.md#34"
+  },
+  {
+    "word": "lifecycle",
+    "meaning": "生命周期",
+    "pronunciation": "",
+    "note": "Understand the component lifecycle before adding side effects.",
+    "example": "Understand the component lifecycle before adding side effects.",
+    "category": "名词",
+    "source": "supplemental_words.md#35"
+  },
+  {
+    "word": "lint",
+    "meaning": "做静态检查",
+    "pronunciation": "",
+    "note": "Lint the code before committing.",
+    "example": "Lint the code before committing.",
+    "category": "动词",
+    "source": "supplemental_words.md#163"
+  },
+  {
+    "word": "list comprehension",
+    "meaning": "列表推导式",
+    "pronunciation": "",
+    "note": "Python syntax",
+    "example": "A list comprehension creates a new list from an iterable.",
+    "category": "词组",
+    "source": "supplemental_words.md#256"
+  },
+  {
+    "word": "load balancer",
+    "meaning": "负载均衡器",
+    "pronunciation": "",
+    "note": "The load balancer spreads traffic across servers.",
+    "example": "The load balancer spreads traffic across servers.",
+    "category": "词组",
+    "source": "supplemental_words.md#135"
+  },
+  {
+    "word": "log level",
+    "meaning": "日志级别",
+    "pronunciation": "",
+    "note": "Set the log level to debug during investigation.",
+    "example": "Set the log level to debug during investigation.",
+    "category": "词组",
+    "source": "supplemental_words.md#136"
+  },
+  {
+    "word": "magnetic storage",
+    "meaning": "磁储存",
+    "pronunciation": "/null/",
+    "note": "",
+    "example": "The term \"magnetic storage\" is important when reading software engineering documentation.",
+    "category": "词组",
+    "source": "2020-01-01-magnetic-storage .md"
+  },
+  {
+    "word": "malware",
+    "meaning": "恶意软件",
+    "pronunciation": "/ˈmælwer/",
+    "note": "",
+    "example": "The term \"malware\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-malware.md"
+  },
+  {
+    "word": "manifest",
+    "meaning": "清单文件",
+    "pronunciation": "",
+    "note": "The manifest lists application permissions.",
+    "example": "The manifest lists application permissions.",
+    "category": "名词",
+    "source": "supplemental_words.md#96"
+  },
+  {
+    "word": "manually",
+    "meaning": "手动地",
+    "pronunciation": "/ˈmænjuəli/",
+    "note": "",
+    "example": "The term \"manually\" is important when reading software engineering documentation.",
+    "category": "副词",
+    "source": "2020-01-01-manually.md"
+  },
+  {
+    "word": "marry",
+    "meaning": "结合、联合",
+    "pronunciation": "/ˈmæri/",
+    "note": "",
+    "example": "The term \"marry\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-marry.md"
+  },
+  {
+    "word": "mature",
+    "meaning": "成熟的",
+    "pronunciation": "/məˈtʃʊr/",
+    "note": "",
+    "example": "The term \"mature\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-mature.md"
+  },
+  {
+    "word": "mechanism",
+    "meaning": "机制，原理",
+    "pronunciation": "/ˈmekənɪzəm/",
+    "note": "",
+    "example": "The term \"mechanism\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-mechanism.md"
+  },
+  {
+    "word": "mediocre",
+    "meaning": "普通的，平凡的",
+    "pronunciation": "/ˌmiːdiˈoʊkər/",
+    "note": "",
+    "example": "The term \"mediocre\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-mediocre.md"
+  },
+  {
+    "word": "memory leak",
+    "meaning": "内存泄漏",
+    "pronunciation": "",
+    "note": "A memory leak can make the process grow over time.",
+    "example": "A memory leak can make the process grow over time.",
+    "category": "词组",
+    "source": "supplemental_words.md#137"
+  },
+  {
+    "word": "merge",
+    "meaning": "合并",
+    "pronunciation": "",
+    "note": "Merge the branch after review.",
+    "example": "Merge the branch after review.",
+    "category": "动词",
+    "source": "supplemental_words.md#164"
+  },
+  {
+    "word": "merge conflict",
+    "meaning": "合并冲突",
+    "pronunciation": "",
+    "note": "Resolve the merge conflict before pushing.",
+    "example": "Resolve the merge conflict before pushing.",
+    "category": "词组",
+    "source": "supplemental_words.md#138"
+  },
+  {
+    "word": "metrics",
+    "meaning": "数据指标",
+    "pronunciation": "/ˈmetrɪks/",
+    "note": "",
+    "example": "The term \"metrics\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-metrics.md"
+  },
+  {
+    "word": "middleware",
+    "meaning": "中间件",
+    "pronunciation": "",
+    "note": "Authentication middleware runs before the route handler.",
+    "example": "Authentication middleware runs before the route handler.",
+    "category": "名词",
+    "source": "supplemental_words.md#36"
+  },
+  {
+    "word": "migration",
+    "meaning": "迁移",
+    "pronunciation": "",
+    "note": "Run the database migration during deployment.",
+    "example": "Run the database migration during deployment.",
+    "category": "名词",
+    "source": "supplemental_words.md#37"
+  },
+  {
+    "word": "minus",
+    "meaning": "减号",
+    "pronunciation": "/ˈmaɪnəs/",
+    "note": "\"-\"",
+    "example": "\"-\"",
+    "category": "符号",
+    "source": "2020-01-01-minus.md"
+  },
+  {
+    "word": "miscellaneous",
+    "meaning": "混杂、各式各样的",
+    "pronunciation": "/ˌmɪsəˈleɪniəs/",
+    "note": "",
+    "example": "The term \"miscellaneous\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-miscellaneous.md"
+  },
+  {
+    "word": "mitigate",
+    "meaning": "减轻，缓和",
+    "pronunciation": "/ˈmɪtɪɡeɪt/",
+    "note": "",
+    "example": "The term \"mitigate\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-mitigate.md"
+  },
+  {
+    "word": "mock",
+    "meaning": "模拟对象",
+    "pronunciation": "",
+    "note": "Avoid testing mock behavior instead of real behavior.",
+    "example": "Avoid testing mock behavior instead of real behavior.",
+    "category": "名词",
+    "source": "supplemental_words.md#97"
+  },
+  {
+    "word": "model",
+    "meaning": "模型",
+    "pronunciation": "/ˈmɑːdl/",
+    "note": "",
+    "example": "The term \"model\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-model.md"
+  },
+  {
+    "word": "model checkpoint",
+    "meaning": "模型检查点",
+    "pronunciation": "",
+    "note": "saved model state",
+    "example": "The model checkpoint stores learned weights after training.",
+    "category": "词组",
+    "source": "supplemental_words.md#221"
+  },
+  {
+    "word": "modular",
+    "meaning": "模块化的",
+    "pronunciation": "",
+    "note": "Modular code is easier to test and replace.",
+    "example": "Modular code is easier to test and replace.",
+    "category": "形容词",
+    "source": "supplemental_words.md#188"
+  },
+  {
+    "word": "module",
+    "meaning": "模块",
+    "pronunciation": "/ˈmɑːdʒuːl/",
+    "note": "",
+    "example": "The term \"module\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-module.md"
+  },
+  {
+    "word": "monetize",
+    "meaning": "货币化",
+    "pronunciation": "/ˈmɑːnɪtaɪz/",
+    "note": "将产品货币化，通过产品赚钱",
+    "example": "将产品货币化，通过产品赚钱",
+    "category": "动词",
+    "source": "2020-01-01-monetize.md"
+  },
+  {
+    "word": "multimodal",
+    "meaning": "多模态的",
+    "pronunciation": "",
+    "note": "text, image, audio, video",
+    "example": "A multimodal model can understand both text and images.",
+    "category": "形容词",
+    "source": "supplemental_words.md#222"
+  },
+  {
+    "word": "mutable",
+    "meaning": "可变的",
+    "pronunciation": "/ˈmjuːtəbl/",
+    "note": "",
+    "example": "The term \"mutable\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-mutable.md"
+  },
+  {
+    "word": "mutation",
+    "meaning": "变更，突变",
+    "pronunciation": "",
+    "note": "The mutation updates client-side state.",
+    "example": "The mutation updates client-side state.",
+    "category": "名词",
+    "source": "supplemental_words.md#98"
+  },
+  {
+    "word": "namespace",
+    "meaning": "命名空间",
+    "pronunciation": "",
+    "note": "Use a namespace to avoid name conflicts.",
+    "example": "Use a namespace to avoid name conflicts.",
+    "category": "名词",
+    "source": "supplemental_words.md#38"
+  },
+  {
+    "word": "neural network",
+    "meaning": "神经网络",
+    "pronunciation": "",
+    "note": "machine learning model",
+    "example": "A neural network learns patterns from training data.",
+    "category": "词组",
+    "source": "supplemental_words.md#223"
+  },
+  {
+    "word": "non-blocking",
+    "meaning": "非阻塞的",
+    "pronunciation": "",
+    "note": "Use non-blocking I/O for high-concurrency servers.",
+    "example": "Use non-blocking I/O for high-concurrency servers.",
+    "category": "形容词",
+    "source": "supplemental_words.md#189"
+  },
+  {
+    "word": "normalize",
+    "meaning": "规范化",
+    "pronunciation": "",
+    "note": "Normalize user input before comparison.",
+    "example": "Normalize user input before comparison.",
+    "category": "动词",
+    "source": "supplemental_words.md#165"
+  },
+  {
+    "word": "notation",
+    "meaning": "注释、标注",
+    "pronunciation": "/noʊˈteɪʃn/",
+    "note": "",
+    "example": "The term \"notation\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-notation.md"
+  },
+  {
+    "word": "observer pattern",
+    "meaning": "观察者模式",
+    "pronunciation": "",
+    "note": "behavioral design pattern",
+    "example": "The observer pattern notifies subscribers when state changes.",
+    "category": "词组",
+    "source": "supplemental_words.md#247"
+  },
+  {
+    "word": "occasion",
+    "meaning": "场合、机会",
+    "pronunciation": "/əˈkeɪʒn/",
+    "note": "",
+    "example": "The term \"occasion\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-occasion.md"
+  },
+  {
+    "word": "on-premise",
+    "meaning": "预置的",
+    "pronunciation": "/ɑːnˈpremɪs/",
+    "note": "",
+    "example": "The term \"on-premise\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-on-premise.md"
+  },
+  {
+    "word": "operand",
+    "meaning": "操作数",
+    "pronunciation": "",
+    "note": "The operator requires two operands.",
+    "example": "The operator requires two operands.",
+    "category": "名词",
+    "source": "supplemental_words.md#99"
+  },
+  {
+    "word": "optimization",
+    "meaning": "优化",
+    "pronunciation": "/ˌɑptəmɪˈzeʃən/",
+    "note": "",
+    "example": "The term \"optimization\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-optimization.md"
+  },
+  {
+    "word": "optimize",
+    "meaning": "优化",
+    "pronunciation": "/ˈɑːptɪmaɪz/",
+    "note": "",
+    "example": "The term \"optimize\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-optimize.md"
+  },
+  {
+    "word": "optional",
+    "meaning": "可选的",
+    "pronunciation": "",
+    "note": "The parameter is optional.",
+    "example": "The parameter is optional.",
+    "category": "形容词",
+    "source": "supplemental_words.md#190"
+  },
+  {
+    "word": "orchestration",
+    "meaning": "编排",
+    "pronunciation": "",
+    "note": "agent or workflow control",
+    "example": "Agent orchestration coordinates tools, memory, and model calls.",
+    "category": "名词",
+    "source": "supplemental_words.md#224"
+  },
+  {
+    "word": "output parser",
+    "meaning": "输出解析器",
+    "pronunciation": "",
+    "note": "LLM application component",
+    "example": "The output parser converts the model response into structured JSON.",
+    "category": "词组",
+    "source": "supplemental_words.md#225"
+  },
+  {
+    "word": "overhead",
+    "meaning": "额外开销，虚耗",
+    "pronunciation": "/ˌovɚˈhɛd/",
+    "note": "In computer science, overhead is any combination of excess or indirect computation time, memory, bandwidth, or other resources that are required to perform a specific task.",
+    "example": "In computer science, overhead is any combination of excess or indirect computation time, memory, bandwidth, or other resources that are required to perform a specific task.",
+    "category": "名词",
+    "source": "2020-01-01-overhead.md"
+  },
+  {
+    "word": "oversight",
+    "meaning": "疏忽、失察",
+    "pronunciation": "/ˈoʊvərsaɪt/",
+    "note": "",
+    "example": "The term \"oversight\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-oversight.md"
+  },
+  {
+    "word": "package manager",
+    "meaning": "包管理器",
+    "pronunciation": "",
+    "note": "Use the package manager to install dependencies.",
+    "example": "Use the package manager to install dependencies.",
+    "category": "词组",
+    "source": "supplemental_words.md#139"
+  },
+  {
+    "word": "parameter",
+    "meaning": "参数",
+    "pronunciation": "",
+    "note": "model weight or function input",
+    "example": "A model parameter is adjusted during training.",
+    "category": "名词",
+    "source": "supplemental_words.md#226"
+  },
+  {
+    "word": "parenthesis",
+    "meaning": "圆括号",
+    "pronunciation": "/pəˈrenθəsɪs/",
+    "note": "\"( )\"",
+    "example": "\"( )\"",
+    "category": "符号",
+    "source": "2020-01-01-parenthesis.md"
+  },
+  {
+    "word": "parse",
+    "meaning": "解析",
+    "pronunciation": "",
+    "note": "Parse the configuration file at startup.",
+    "example": "Parse the configuration file at startup.",
+    "category": "动词",
+    "source": "supplemental_words.md#166"
+  },
+  {
+    "word": "parser",
+    "meaning": "解析器",
+    "pronunciation": "",
+    "note": "The parser reads front matter from markdown files.",
+    "example": "The parser reads front matter from markdown files.",
+    "category": "名词",
+    "source": "supplemental_words.md#100"
+  },
+  {
+    "word": "partition",
+    "meaning": "分区",
+    "pronunciation": "",
+    "note": "Partition large tables by date.",
+    "example": "Partition large tables by date.",
+    "category": "名词",
+    "source": "supplemental_words.md#101"
+  },
+  {
+    "word": "patch",
+    "meaning": "补丁",
+    "pronunciation": "",
+    "note": "Apply the patch after reviewing the diff.",
+    "example": "Apply the patch after reviewing the diff.",
+    "category": "名词",
+    "source": "supplemental_words.md#102"
+  },
+  {
+    "word": "payload",
+    "meaning": "负载，传输内容",
+    "pronunciation": "",
+    "note": "Validate the request payload before saving it.",
+    "example": "Validate the request payload before saving it.",
+    "category": "名词",
+    "source": "supplemental_words.md#39"
+  },
+  {
+    "word": "percent",
+    "meaning": "百分号",
+    "pronunciation": "/pərˈsent/",
+    "note": "\"%\"",
+    "example": "\"%\"",
+    "category": "符号",
+    "source": "2020-01-01-percent.md"
+  },
+  {
+    "word": "period",
+    "meaning": "句号",
+    "pronunciation": "/ˈpɪriəd/",
+    "note": "\".\"",
+    "example": "\".\"",
+    "category": "符号",
+    "source": "2020-01-01-period.md"
+  },
+  {
+    "word": "periodically",
+    "meaning": "定期地，周期性地",
+    "pronunciation": "/ˌpɪriˈɑːdɪkli/",
+    "note": "",
+    "example": "The term \"periodically\" is important when reading software engineering documentation.",
+    "category": "副词",
+    "source": "2020-01-01-periodically.md"
+  },
+  {
+    "word": "permanent",
+    "meaning": "永久的",
+    "pronunciation": "/ˈpɜːrmənənt/",
+    "note": "",
+    "example": "The term \"permanent\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-permanent.md"
+  },
+  {
+    "word": "permission",
+    "meaning": "权限",
+    "pronunciation": "/pəˈmɪʃn/",
+    "note": "",
+    "example": "The term \"permission\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2022-07-10-permission.md"
+  },
+  {
+    "word": "permissive",
+    "meaning": "宽容的",
+    "pronunciation": "/pərˈmɪsɪv/",
+    "note": "",
+    "example": "The term \"permissive\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-permissive.md"
+  },
+  {
+    "word": "permutation",
+    "meaning": "排序",
+    "pronunciation": "/ˌpɜːrmjuˈteɪʃn/",
+    "note": "",
+    "example": "The term \"permutation\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-permutation.md"
+  },
+  {
+    "word": "persist",
+    "meaning": "持久化",
+    "pronunciation": "",
+    "note": "Persist user preferences in local storage.",
+    "example": "Persist user preferences in local storage.",
+    "category": "动词",
+    "source": "supplemental_words.md#167"
+  },
+  {
+    "word": "pipeline",
+    "meaning": "流水线",
+    "pronunciation": "",
+    "note": "The CI pipeline builds and tests every commit.",
+    "example": "The CI pipeline builds and tests every commit.",
+    "category": "名词",
+    "source": "supplemental_words.md#40"
+  },
+  {
+    "word": "plugin",
+    "meaning": "插件",
+    "pronunciation": "",
+    "note": "Load plugins after the core service is ready.",
+    "example": "Load plugins after the core service is ready.",
+    "category": "名词",
+    "source": "supplemental_words.md#41"
+  },
+  {
+    "word": "plus",
+    "meaning": "加号",
+    "pronunciation": "/plʌs/",
+    "note": "\"+\"",
+    "example": "\"+\"",
+    "category": "符号",
+    "source": "2020-01-01-plus.md"
+  },
+  {
+    "word": "polyfill",
+    "meaning": "填充物",
+    "pronunciation": "/ˈpəʊliːfɪl/",
+    "note": "常指代 JavaScript 的特性，[MDN 说明](https://developer.mozilla.org/zh-CN/docs/Glossary/Polyfill)",
+    "example": "常指代 JavaScript 的特性，[MDN 说明](https://developer.mozilla.org/zh-CN/docs/Glossary/Polyfill)",
+    "category": "名词",
+    "source": "2020-01-01-polyfill.md"
+  },
+  {
+    "word": "polymorphism",
+    "meaning": "多态",
+    "pronunciation": "",
+    "note": "object-oriented programming",
+    "example": "Polymorphism lets different classes respond to the same interface.",
+    "category": "名词",
+    "source": "supplemental_words.md#253"
+  },
+  {
+    "word": "populate",
+    "meaning": "输入数据",
+    "pronunciation": "/ˈpɑːpjuleɪt/",
+    "note": "",
+    "example": "The term \"populate\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-populate.md"
+  },
+  {
+    "word": "port",
+    "meaning": "端口",
+    "pronunciation": "",
+    "note": "The development server listens on port 4000.",
+    "example": "The development server listens on port 4000.",
+    "category": "名词",
+    "source": "supplemental_words.md#42"
+  },
+  {
+    "word": "portable",
+    "meaning": "可移植的",
+    "pronunciation": "",
+    "note": "Portable code runs on multiple platforms.",
+    "example": "Portable code runs on multiple platforms.",
+    "category": "形容词",
+    "source": "supplemental_words.md#191"
+  },
+  {
+    "word": "post-mortem",
+    "meaning": "尸体解剖，事后反思（或剖析）",
+    "pronunciation": "/ˌpoʊst ˈmɔːrtəm/",
+    "note": "",
+    "example": "The term \"post-mortem\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-post-mortem.md"
+  },
+  {
+    "word": "primitive",
+    "meaning": "原始类型",
+    "pronunciation": "",
+    "note": "Number and boolean are primitive values.",
+    "example": "Number and boolean are primitive values.",
+    "category": "名词",
+    "source": "supplemental_words.md#103"
+  },
+  {
+    "word": "priority",
+    "meaning": "优先次序",
+    "pronunciation": "/praɪˈɔːrəti/",
+    "note": "",
+    "example": "The term \"priority\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-priority.md"
+  },
+  {
+    "word": "privilege",
+    "meaning": "特权，优待",
+    "pronunciation": "/ˈprɪvəlɪdʒ/",
+    "note": "",
+    "example": "The term \"privilege\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-privilege.md"
+  },
+  {
+    "word": "profiler",
+    "meaning": "性能分析器",
+    "pronunciation": "",
+    "note": "Use a profiler to find the slow function.",
+    "example": "Use a profiler to find the slow function.",
+    "category": "名词",
+    "source": "supplemental_words.md#104"
+  },
+  {
+    "word": "prompt",
+    "meaning": "提示词",
+    "pronunciation": "",
+    "note": "model input",
+    "example": "A clear prompt gives the model context and constraints.",
+    "category": "名词",
+    "source": "supplemental_words.md#227"
+  },
+  {
+    "word": "prompt engineering",
+    "meaning": "提示词工程",
+    "pronunciation": "",
+    "note": "LLM usage technique",
+    "example": "Prompt engineering improves the quality of model responses.",
+    "category": "词组",
+    "source": "supplemental_words.md#228"
+  },
+  {
+    "word": "prospectus",
+    "meaning": "招股说明书.",
+    "pronunciation": "/prəˈspektəs/",
+    "note": "",
+    "example": "The term \"prospectus\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2025-05-26-prospectus.md"
+  },
+  {
+    "word": "protocol",
+    "meaning": "协议",
+    "pronunciation": "/ˈproʊtəkɑːl/",
+    "note": "",
+    "example": "The term \"protocol\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-protocol.md"
+  },
+  {
+    "word": "prototype",
+    "meaning": "原型",
+    "pronunciation": "",
+    "note": "Build a prototype to validate the workflow.",
+    "example": "Build a prototype to validate the workflow.",
+    "category": "名词",
+    "source": "supplemental_words.md#105"
+  },
+  {
+    "word": "provision",
+    "meaning": "规定；预备；准备",
+    "pronunciation": "/prəˈvɪʒn/",
+    "note": "例如对UFS设备进行provision，分区、划分LUN等操作",
+    "example": "例如对UFS设备进行provision，分区、划分LUN等操作",
+    "category": "名词",
+    "source": "2020-01-01-provision.md"
+  },
+  {
+    "word": "proxy",
+    "meaning": "代理",
+    "pronunciation": "",
+    "note": "The proxy forwards browser requests to the backend.",
+    "example": "The proxy forwards browser requests to the backend.",
+    "category": "名词",
+    "source": "supplemental_words.md#43"
+  },
+  {
+    "word": "pull request",
+    "meaning": "拉取请求，合并请求",
+    "pronunciation": "",
+    "note": "Open a pull request for review.",
+    "example": "Open a pull request for review.",
+    "category": "词组",
+    "source": "supplemental_words.md#140"
+  },
+  {
+    "word": "query",
+    "meaning": "查询",
+    "pronunciation": "",
+    "note": "Query the database by primary key.",
+    "example": "Query the database by primary key.",
+    "category": "动词",
+    "source": "supplemental_words.md#168"
+  },
+  {
+    "word": "question mark",
+    "meaning": "问号",
+    "pronunciation": "/ˈkwestʃən/",
+    "note": "\"?\"",
+    "example": "\"?\"",
+    "category": "符号",
+    "source": "2020-01-01-question-mark.md"
+  },
+  {
+    "word": "queue",
+    "meaning": "队列",
+    "pronunciation": "",
+    "note": "Put long-running jobs into a queue.",
+    "example": "Put long-running jobs into a queue.",
+    "category": "名词",
+    "source": "supplemental_words.md#44"
+  },
+  {
+    "word": "rag",
+    "meaning": "检索增强生成",
+    "pronunciation": "",
+    "note": "retrieval-augmented generation",
+    "example": "RAG retrieves relevant passages before generating an answer.",
+    "category": "名词",
+    "source": "supplemental_words.md#229"
+  },
+  {
+    "word": "ranking",
+    "meaning": "排序，排名",
+    "pronunciation": "",
+    "note": "search result ordering",
+    "example": "Ranking puts the most relevant documents at the top.",
+    "category": "名词",
+    "source": "supplemental_words.md#230"
+  },
+  {
+    "word": "rapid",
+    "meaning": "迅速的、飞快的",
+    "pronunciation": "/ˈræpɪd/",
+    "note": "",
+    "example": "The term \"rapid\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-rapid.md"
+  },
+  {
+    "word": "rate limit",
+    "meaning": "速率限制",
+    "pronunciation": "",
+    "note": "Add a rate limit to protect the API.",
+    "example": "Add a rate limit to protect the API.",
+    "category": "词组",
+    "source": "supplemental_words.md#141"
+  },
+  {
+    "word": "ratify",
+    "meaning": "批准，认可",
+    "pronunciation": "/ˈrætɪfaɪ/",
+    "note": "",
+    "example": "The term \"ratify\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-ratify.md"
+  },
+  {
+    "word": "reasoning",
+    "meaning": "推理，推断",
+    "pronunciation": "",
+    "note": "model reasoning",
+    "example": "Reasoning helps the model solve multi-step problems.",
+    "category": "名词",
+    "source": "supplemental_words.md#231"
+  },
+  {
+    "word": "reconcile",
+    "meaning": "调停，调解，顺从",
+    "pronunciation": "/ˈrekənsaɪl/",
+    "note": "",
+    "example": "The term \"reconcile\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-reconcile.md"
+  },
+  {
+    "word": "rectify",
+    "meaning": "改正，修正，纠正",
+    "pronunciation": "/ˈrektɪfaɪ/",
+    "note": "",
+    "example": "The term \"rectify\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-rectify.md"
+  },
+  {
+    "word": "recursion",
+    "meaning": "递归",
+    "pronunciation": "/rɪˈkɜːrʒn/",
+    "note": "",
+    "example": "The term \"recursion\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-recursion.md"
+  },
+  {
+    "word": "recursive",
+    "meaning": "递归的",
+    "pronunciation": "",
+    "note": "A recursive function calls itself.",
+    "example": "A recursive function calls itself.",
+    "category": "形容词",
+    "source": "supplemental_words.md#192"
+  },
+  {
+    "word": "redacted",
+    "meaning": "经过编辑的",
+    "pronunciation": "/rəˈdakt/",
+    "note": "",
+    "example": "The term \"redacted\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-redacted.md"
+  },
+  {
+    "word": "redundancy",
+    "meaning": "冗余，多余",
+    "pronunciation": "/rɪˈdʌndənsi/",
+    "note": "",
+    "example": "The term \"redundancy\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-redundancy.md"
+  },
+  {
+    "word": "registry",
+    "meaning": "注册表，仓库",
+    "pronunciation": "",
+    "note": "The package registry stores versioned artifacts.",
+    "example": "The package registry stores versioned artifacts.",
+    "category": "名词",
+    "source": "supplemental_words.md#45"
+  },
+  {
+    "word": "release note",
+    "meaning": "发布说明",
+    "pronunciation": "",
+    "note": "Write a release note for user-facing changes.",
+    "example": "Write a release note for user-facing changes.",
+    "category": "词组",
+    "source": "supplemental_words.md#142"
+  },
+  {
+    "word": "reliability",
+    "meaning": "可靠性",
+    "pronunciation": "/rɪˌlaɪəˈbɪləti/",
+    "note": "",
+    "example": "The term \"reliability\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-reliability.md"
+  },
+  {
+    "word": "remediation",
+    "meaning": "补救，矫正",
+    "pronunciation": "/rɪˌmiːdiˈeɪʃn/",
+    "note": "",
+    "example": "The term \"remediation\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-remediation.md"
+  },
+  {
+    "word": "render",
+    "meaning": "渲染",
+    "pronunciation": "",
+    "note": "Render the list after filters change.",
+    "example": "Render the list after filters change.",
+    "category": "动词",
+    "source": "supplemental_words.md#169"
+  },
+  {
+    "word": "replica",
+    "meaning": "复制物",
+    "pronunciation": "/ˈreplikə/",
+    "note": "",
+    "example": "The term \"replica\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-replicas.md"
+  },
+  {
+    "word": "replicate",
+    "meaning": "复制，同步副本",
+    "pronunciation": "",
+    "note": "Replicate data to another region.",
+    "example": "Replicate data to another region.",
+    "category": "动词",
+    "source": "supplemental_words.md#170"
+  },
+  {
+    "word": "repository",
+    "meaning": "代码仓库",
+    "pronunciation": "",
+    "note": "Clone the repository before building the project.",
+    "example": "Clone the repository before building the project.",
+    "category": "名词",
+    "source": "supplemental_words.md#46"
+  },
+  {
+    "word": "reproducible",
+    "meaning": "可复现的",
+    "pronunciation": "",
+    "note": "A reproducible bug is easier to fix.",
+    "example": "A reproducible bug is easier to fix.",
+    "category": "形容词",
+    "source": "supplemental_words.md#193"
+  },
+  {
+    "word": "request",
+    "meaning": "请求",
+    "pronunciation": "",
+    "note": "Log the request ID for troubleshooting.",
+    "example": "Log the request ID for troubleshooting.",
+    "category": "名词",
+    "source": "supplemental_words.md#47"
+  },
+  {
+    "word": "reranker",
+    "meaning": "重排序器",
+    "pronunciation": "",
+    "note": "retrieval pipeline",
+    "example": "A reranker improves retrieval results after vector search.",
+    "category": "名词",
+    "source": "supplemental_words.md#232"
+  },
+  {
+    "word": "resilience",
+    "meaning": "回弹性",
+    "pronunciation": "/rɪˈzɪliəns/",
+    "note": "",
+    "example": "The term \"resilience\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-resilience.md"
+  },
+  {
+    "word": "resilient",
+    "meaning": "有弹力的、能恢复的",
+    "pronunciation": "/rɪˈzɪliənt/",
+    "note": "",
+    "example": "The term \"resilient\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-resilient.md"
+  },
+  {
+    "word": "resolver",
+    "meaning": "解析器，解析函数",
+    "pronunciation": "",
+    "note": "The resolver maps a domain name to an IP address.",
+    "example": "The resolver maps a domain name to an IP address.",
+    "category": "名词",
+    "source": "supplemental_words.md#106"
+  },
+  {
+    "word": "respective",
+    "meaning": "分别的，各自的",
+    "pronunciation": "/rɪˈspektɪv/",
+    "note": "",
+    "example": "The term \"respective\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-respective.md"
+  },
+  {
+    "word": "response",
+    "meaning": "响应",
+    "pronunciation": "",
+    "note": "Return a response with a clear status code.",
+    "example": "Return a response with a clear status code.",
+    "category": "名词",
+    "source": "supplemental_words.md#48"
+  },
+  {
+    "word": "responsive",
+    "meaning": "响应式的，响应快的",
+    "pronunciation": "",
+    "note": "The layout is responsive on mobile and desktop.",
+    "example": "The layout is responsive on mobile and desktop.",
+    "category": "形容词",
+    "source": "supplemental_words.md#194"
+  },
+  {
+    "word": "restriction",
+    "meaning": "限制，约束",
+    "pronunciation": "/ri'strikʃən/",
+    "note": "",
+    "example": "The term \"restriction\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-restriction.md"
+  },
+  {
+    "word": "retain",
+    "meaning": "保持",
+    "pronunciation": "/rɪˈteɪn/",
+    "note": "",
+    "example": "The term \"retain\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-retain.md"
+  },
+  {
+    "word": "retrieval",
+    "meaning": "检索",
+    "pronunciation": "",
+    "note": "information retrieval",
+    "example": "Retrieval finds useful context from the knowledge base.",
+    "category": "名词",
+    "source": "supplemental_words.md#233"
+  },
+  {
+    "word": "retriever",
+    "meaning": "检索器",
+    "pronunciation": "",
+    "note": "RAG component",
+    "example": "The retriever selects documents that match the user question.",
+    "category": "名词",
+    "source": "supplemental_words.md#234"
+  },
+  {
+    "word": "retrospective",
+    "meaning": "追溯的、回顾的、复盘的",
+    "pronunciation": "/ˌretrəˈspektɪv/",
+    "note": "",
+    "example": "The term \"retrospective\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-retrospective.md"
+  },
+  {
+    "word": "retry",
+    "meaning": "重试",
+    "pronunciation": "",
+    "note": "Retry transient failures with a short delay.",
+    "example": "Retry transient failures with a short delay.",
+    "category": "动词",
+    "source": "supplemental_words.md#171"
+  },
+  {
+    "word": "revision",
+    "meaning": "修订版本",
+    "pronunciation": "",
+    "note": "The revision includes the bug fix and tests.",
+    "example": "The revision includes the bug fix and tests.",
+    "category": "名词",
+    "source": "supplemental_words.md#49"
+  },
+  {
+    "word": "revisit",
+    "meaning": "再访，再议",
+    "pronunciation": "/ˌriːˈvɪzɪt/",
+    "note": "",
+    "example": "The term \"revisit\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-revisit.md"
+  },
+  {
+    "word": "right arrow",
+    "meaning": "向右箭头",
+    "pronunciation": "/null/",
+    "note": "\"→\"",
+    "example": "\"→\"",
+    "category": "符号",
+    "source": "2020-01-01-right-arrow.md"
+  },
+  {
+    "word": "robust",
+    "meaning": "强健的，顽健的",
+    "pronunciation": "/roʊˈbʌst/",
+    "note": "",
+    "example": "The term \"robust\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-robust.md"
+  },
+  {
+    "word": "roll off",
+    "meaning": "TBD",
+    "pronunciation": "/null/",
+    "note": "",
+    "example": "The term \"roll off\" is important when reading software engineering documentation.",
+    "category": "词组",
+    "source": "2020-01-01-roll-off.md"
+  },
+  {
+    "word": "roll out",
+    "meaning": "TBD",
+    "pronunciation": "/null/",
+    "note": "",
+    "example": "The term \"roll out\" is important when reading software engineering documentation.",
+    "category": "词组",
+    "source": "2020-01-01-roll-out.md"
+  },
+  {
+    "word": "rollback",
+    "meaning": "回滚",
+    "pronunciation": "",
+    "note": "Rollback the release if the error rate increases.",
+    "example": "Rollback the release if the error rate increases.",
+    "category": "名词",
+    "source": "supplemental_words.md#50"
+  },
+  {
+    "word": "route",
+    "meaning": "路由",
+    "pronunciation": "",
+    "note": "Add a route for the new settings page.",
+    "example": "Add a route for the new settings page.",
+    "category": "名词",
+    "source": "supplemental_words.md#51"
+  },
+  {
+    "word": "runtime",
+    "meaning": "运行时",
+    "pronunciation": "",
+    "note": "The runtime must support this language feature.",
+    "example": "The runtime must support this language feature.",
+    "category": "名词",
+    "source": "supplemental_words.md#52"
+  },
+  {
+    "word": "sandbox",
+    "meaning": "沙箱",
+    "pronunciation": "",
+    "note": "Run untrusted code inside a sandbox.",
+    "example": "Run untrusted code inside a sandbox.",
+    "category": "名词",
+    "source": "supplemental_words.md#53"
+  },
+  {
+    "word": "sanitize",
+    "meaning": "清理，净化",
+    "pronunciation": "",
+    "note": "Sanitize HTML before displaying user content.",
+    "example": "Sanitize HTML before displaying user content.",
+    "category": "动词",
+    "source": "supplemental_words.md#172"
+  },
+  {
+    "word": "scalability",
+    "meaning": "可扩展性",
+    "pronunciation": "/ˌskeɪləˈbɪləti/",
+    "note": "",
+    "example": "The term \"scalability\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-scalability.md"
+  },
+  {
+    "word": "scenario",
+    "meaning": "场景",
+    "pronunciation": "/sɪˈnɛrɪˌo/",
+    "note": "",
+    "example": "The term \"scenario\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-scenario.md"
+  },
+  {
+    "word": "scheduler",
+    "meaning": "时间调度程序",
+    "pronunciation": "/ˈskedʒuːlər/",
+    "note": "",
+    "example": "The term \"scheduler\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-scheduler.md"
+  },
+  {
+    "word": "schema",
+    "meaning": "提要，纲要，架构",
+    "pronunciation": "/ˈskiːmə/",
+    "note": "多用于 database schema",
+    "example": "多用于 database schema",
+    "category": "名词",
+    "source": "2020-01-01-schema.md"
+  },
+  {
+    "word": "scope",
+    "meaning": "范围，作用域",
+    "pronunciation": "/skoʊp/",
+    "note": "",
+    "example": "The term \"scope\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-scope.md"
+  },
+  {
+    "word": "script",
+    "meaning": "脚本",
+    "pronunciation": "",
+    "note": "The script generates word data from source files.",
+    "example": "The script generates word data from source files.",
+    "category": "名词",
+    "source": "supplemental_words.md#54"
+  },
+  {
+    "word": "seamless",
+    "meaning": "无缝的",
+    "pronunciation": "/ˈsiːmləs/",
+    "note": "",
+    "example": "The term \"seamless\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-seamless.md"
+  },
+  {
+    "word": "section",
+    "meaning": "分节号",
+    "pronunciation": "/ˈsekʃn/",
+    "note": "\"§\"",
+    "example": "\"§\"",
+    "category": "符号",
+    "source": "2020-01-01-section.md"
+  },
+  {
+    "word": "selector",
+    "meaning": "选择器",
+    "pronunciation": "",
+    "note": "Use a stable selector in browser tests.",
+    "example": "Use a stable selector in browser tests.",
+    "category": "名词",
+    "source": "supplemental_words.md#55"
+  },
+  {
+    "word": "semantic",
+    "meaning": "语义的",
+    "pronunciation": "/sɪˈmæntɪk/",
+    "note": "",
+    "example": "The term \"semantic\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-semantic.md"
+  },
+  {
+    "word": "semantic search",
+    "meaning": "语义搜索",
+    "pronunciation": "",
+    "note": "vector-based search",
+    "example": "Semantic search can find related ideas even without exact keywords.",
+    "category": "词组",
+    "source": "supplemental_words.md#235"
+  },
+  {
+    "word": "semicolon",
+    "meaning": "分号",
+    "pronunciation": "/ˈsemikoʊlən/",
+    "note": "\";\"",
+    "example": "\";\"",
+    "category": "符号",
+    "source": "2020-01-01-semicolon.md"
+  },
+  {
+    "word": "sequence diagram",
+    "meaning": "时序图",
+    "pronunciation": "",
+    "note": "UML diagram",
+    "example": "A sequence diagram shows messages between objects over time.",
+    "category": "词组",
+    "source": "supplemental_words.md#250"
+  },
+  {
+    "word": "serialize",
+    "meaning": "序列化",
+    "pronunciation": "",
+    "note": "Serialize the object into a JSON string.",
+    "example": "Serialize the object into a JSON string.",
+    "category": "动词",
+    "source": "supplemental_words.md#173"
+  },
+  {
+    "word": "serializer",
+    "meaning": "序列化器",
+    "pronunciation": "",
+    "note": "The serializer converts objects into JSON.",
+    "example": "The serializer converts objects into JSON.",
+    "category": "名词",
+    "source": "supplemental_words.md#56"
+  },
+  {
+    "word": "session",
+    "meaning": "会话",
+    "pronunciation": "",
+    "note": "Expire the session after a period of inactivity.",
+    "example": "Expire the session after a period of inactivity.",
+    "category": "名词",
+    "source": "supplemental_words.md#107"
+  },
+  {
+    "word": "severity",
+    "meaning": "严重性",
+    "pronunciation": "/sɪˈverəti/",
+    "note": "用于表达事故的严重程度",
+    "example": "用于表达事故的严重程度",
+    "category": "名词",
+    "source": "2020-01-01-severity.md"
+  },
+  {
+    "word": "signature",
+    "meaning": "签名，函数签名",
+    "pronunciation": "",
+    "note": "The function signature changed in this release.",
+    "example": "The function signature changed in this release.",
+    "category": "名词",
+    "source": "supplemental_words.md#108"
+  },
+  {
+    "word": "significant",
+    "meaning": "重大的，有意义的",
+    "pronunciation": "/sɪɡˈnɪfɪkənt/",
+    "note": "",
+    "example": "The term \"significant\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-significant.md"
+  },
+  {
+    "word": "simulator",
+    "meaning": "模拟器",
+    "pronunciation": "",
+    "note": "Run the test in a network simulator.",
+    "example": "Run the test in a network simulator.",
+    "category": "名词",
+    "source": "supplemental_words.md#109"
+  },
+  {
+    "word": "simultaneously",
+    "meaning": "同时地",
+    "pronunciation": "/ˌsaɪmlˈteɪniəsli/",
+    "note": "",
+    "example": "The term \"simultaneously\" is important when reading software engineering documentation.",
+    "category": "副词",
+    "source": "2020-01-01-simultaneously.md"
+  },
+  {
+    "word": "single quotation mark",
+    "meaning": "单引号",
+    "pronunciation": "/null/",
+    "note": "\"'\"",
+    "example": "\"'\"",
+    "category": "符号",
+    "source": "2020-01-01-single-quotation-mark.md"
+  },
+  {
+    "word": "singleton",
+    "meaning": "单例",
+    "pronunciation": "",
+    "note": "A singleton has only one shared instance.",
+    "example": "A singleton has only one shared instance.",
+    "category": "名词",
+    "source": "supplemental_words.md#110"
+  },
+  {
+    "word": "SIT",
+    "meaning": "系统整合测试",
+    "pronunciation": "/null/",
+    "note": "System Integration Testing",
+    "example": "System Integration Testing",
+    "category": "缩写",
+    "source": "2020-01-01-sit.md"
+  },
+  {
+    "word": "slash",
+    "meaning": "斜线号",
+    "pronunciation": "/slæʃ/",
+    "note": "\"／\"",
+    "example": "\"／\"",
+    "category": "符号",
+    "source": "2020-01-01-slash.md"
+  },
+  {
+    "word": "smoke test",
+    "meaning": "冒烟测试",
+    "pronunciation": "",
+    "note": "Run a smoke test after deployment.",
+    "example": "Run a smoke test after deployment.",
+    "category": "词组",
+    "source": "supplemental_words.md#143"
+  },
+  {
+    "word": "snapshot",
+    "meaning": "快照",
+    "pronunciation": "",
+    "note": "Take a snapshot before changing the virtual machine.",
+    "example": "Take a snapshot before changing the virtual machine.",
+    "category": "名词",
+    "source": "supplemental_words.md#57"
+  },
+  {
+    "word": "socket",
+    "meaning": "套接字",
+    "pronunciation": "",
+    "note": "The socket closes when the connection drops.",
+    "example": "The socket closes when the connection drops.",
+    "category": "名词",
+    "source": "supplemental_words.md#111"
+  },
+  {
+    "word": "sophisticated",
+    "meaning": "复杂的、富有经验的",
+    "pronunciation": "/səˈfɪstɪkeɪtɪd/",
+    "note": "",
+    "example": "The term \"sophisticated\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-sophisticated.md"
+  },
+  {
+    "word": "source map",
+    "meaning": "源码映射",
+    "pronunciation": "",
+    "note": "Source maps make minified stack traces readable.",
+    "example": "Source maps make minified stack traces readable.",
+    "category": "词组",
+    "source": "supplemental_words.md#144"
+  },
+  {
+    "word": "square brackets",
+    "meaning": "方括号",
+    "pronunciation": "/null/",
+    "note": "\"[ ]\"",
+    "example": "\"[ ]\"",
+    "category": "符号",
+    "source": "2020-01-01-square-brackets.md"
+  },
+  {
+    "word": "stack",
+    "meaning": "技术栈，调用栈",
+    "pronunciation": "",
+    "note": "Read the stack trace to locate the failing function.",
+    "example": "Read the stack trace to locate the failing function.",
+    "category": "名词",
+    "source": "supplemental_words.md#58"
+  },
+  {
+    "word": "standalone",
+    "meaning": "单独的",
+    "pronunciation": "/ˈstændəˌləun/",
+    "note": "",
+    "example": "The term \"standalone\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-standalone.md"
+  },
+  {
+    "word": "stateless",
+    "meaning": "无状态的",
+    "pronunciation": "",
+    "note": "Stateless services are easier to scale horizontally.",
+    "example": "Stateless services are easier to scale horizontally.",
+    "category": "形容词",
+    "source": "supplemental_words.md#195"
+  },
+  {
+    "word": "strangler pattern",
+    "meaning": "绞杀者模式",
+    "pronunciation": "/null/",
+    "note": "通过将特定的功能片断逐渐取代为新的应用程序和服务，逐步迁移旧系统。 随着旧系统的功能被替换，新系统最终将取代旧系统的所有功能，抑制旧系统并使其停用。",
+    "example": "通过将特定的功能片断逐渐取代为新的应用程序和服务，逐步迁移旧系统。 随着旧系统的功能被替换，新系统最终将取代旧系统的所有功能，抑制旧系统并使其停用。",
+    "category": "词组",
+    "source": "2020-01-01-strangler-pattern.md"
+  },
+  {
+    "word": "strategy pattern",
+    "meaning": "策略模式",
+    "pronunciation": "",
+    "note": "behavioral design pattern",
+    "example": "The strategy pattern swaps algorithms without changing the caller.",
+    "category": "词组",
+    "source": "supplemental_words.md#248"
+  },
+  {
+    "word": "streamline",
+    "meaning": "使现代化、流线，使合理化",
+    "pronunciation": "/ˈstriːmlaɪn/",
+    "note": "",
+    "example": "The term \"streamline\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-streamline.md"
+  },
+  {
+    "word": "strength",
+    "meaning": "优势",
+    "pronunciation": "/streŋkθ/",
+    "note": "",
+    "example": "The term \"strength\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-strength.md"
+  },
+  {
+    "word": "stroke",
+    "meaning": "笔画",
+    "pronunciation": "/stroʊk/",
+    "note": "",
+    "example": "The term \"stroke\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-stroke.md"
+  },
+  {
+    "word": "stub",
+    "meaning": "存根，简化替身",
+    "pronunciation": "",
+    "note": "Use a stub for the remote payment service in tests.",
+    "example": "Use a stub for the remote payment service in tests.",
+    "category": "名词",
+    "source": "supplemental_words.md#112"
+  },
+  {
+    "word": "subnet",
+    "meaning": "子网",
+    "pronunciation": "",
+    "note": "Place the database in a private subnet.",
+    "example": "Place the database in a private subnet.",
+    "category": "名词",
+    "source": "supplemental_words.md#59"
+  },
+  {
+    "word": "subsequent",
+    "meaning": "随后的、之后的",
+    "pronunciation": "/ˈsʌbsɪkwənt/",
+    "note": "",
+    "example": "The term \"subsequent\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-subsequent.md"
+  },
+  {
+    "word": "subsidiary",
+    "meaning": "子公司",
+    "pronunciation": "/ˈsəbsɪdieri/",
+    "note": "",
+    "example": "The term \"subsidiary\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-subsidiary.md"
+  },
+  {
+    "word": "substantial",
+    "meaning": "实质的",
+    "pronunciation": "/səbˈstænʃl/",
+    "note": "",
+    "example": "The term \"substantial\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-substantial.md"
+  },
+  {
+    "word": "subtle",
+    "meaning": "微小（但重要）的，微妙的",
+    "pronunciation": "/ˈsʌt̬.əl/",
+    "note": "",
+    "example": "The term \"subtle\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-subtle.md"
+  },
+  {
+    "word": "sustainable",
+    "meaning": "可持续的",
+    "pronunciation": "/səˈsteɪnəbl/",
+    "note": "",
+    "example": "The term \"sustainable\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-sustainable.md"
+  },
+  {
+    "word": "symmetric",
+    "meaning": "对称的",
+    "pronunciation": "/sɪ'mɛtrɪk/",
+    "note": "",
+    "example": "The term \"symmetric\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-symmetric.md"
+  },
+  {
+    "word": "synchronous",
+    "meaning": "同步的",
+    "pronunciation": "/ˈsɪŋkrənəs/",
+    "note": "",
+    "example": "The term \"synchronous\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-synchronous.md"
+  },
+  {
+    "word": "system prompt",
+    "meaning": "系统提示词",
+    "pronunciation": "",
+    "note": "high-priority instruction",
+    "example": "The system prompt defines the assistant's role and boundaries.",
+    "category": "词组",
+    "source": "supplemental_words.md#236"
+  },
+  {
+    "word": "takeaway",
+    "meaning": "收获、学到什么",
+    "pronunciation": "/ˈteɪkəweɪ/",
+    "note": "",
+    "example": "The term \"takeaway\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-takeaway.md"
+  },
+  {
+    "word": "taxonomy",
+    "meaning": "分类",
+    "pronunciation": "/tækˈsɑːnəmi/",
+    "note": "",
+    "example": "The term \"taxonomy\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-taxonomy.md"
+  },
+  {
+    "word": "temperature",
+    "meaning": "温度参数",
+    "pronunciation": "",
+    "note": "generation randomness",
+    "example": "Lower temperature makes model output more deterministic.",
+    "category": "名词",
+    "source": "supplemental_words.md#237"
+  },
+  {
+    "word": "template",
+    "meaning": "模板",
+    "pronunciation": "",
+    "note": "Render the page from a template.",
+    "example": "Render the page from a template.",
+    "category": "名词",
+    "source": "supplemental_words.md#113"
+  },
+  {
+    "word": "tenancy",
+    "meaning": "租期",
+    "pronunciation": "/ˈtenənsi/",
+    "note": "",
+    "example": "The term \"tenancy\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-tenancy.md"
+  },
+  {
+    "word": "tentative",
+    "meaning": "假设，试验",
+    "pronunciation": "/ˈtentətɪv/",
+    "note": "",
+    "example": "The term \"tentative\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-tentative.md"
+  },
+  {
+    "word": "thread",
+    "meaning": "线程",
+    "pronunciation": "",
+    "note": "Avoid blocking the main thread.",
+    "example": "Avoid blocking the main thread.",
+    "category": "名词",
+    "source": "supplemental_words.md#114"
+  },
+  {
+    "word": "threshold",
+    "meaning": "阈值",
+    "pronunciation": "/ˈθreʃhoʊld/",
+    "note": "",
+    "example": "The term \"threshold\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-threshold.md"
+  },
+  {
+    "word": "thrilled",
+    "meaning": "非常兴奋的",
+    "pronunciation": "/θrɪld/",
+    "note": "",
+    "example": "The term \"thrilled\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-thrilled.md"
+  },
+  {
+    "word": "throttle",
+    "meaning": "节流，限速",
+    "pronunciation": "",
+    "note": "Throttle scroll events to reduce work.",
+    "example": "Throttle scroll events to reduce work.",
+    "category": "动词",
+    "source": "supplemental_words.md#174"
+  },
+  {
+    "word": "throughput",
+    "meaning": "吞吐量",
+    "pronunciation": "/ˈθruːpʊt/",
+    "note": "",
+    "example": "The term \"throughput\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-throughput.md"
+  },
+  {
+    "word": "tilde",
+    "meaning": "波浪号",
+    "pronunciation": "/ˈtɪldə/",
+    "note": "\"～\"",
+    "example": "\"～\"",
+    "category": "符号",
+    "source": "2020-01-01-tilde.md"
+  },
+  {
+    "word": "timeout",
+    "meaning": "超时",
+    "pronunciation": "",
+    "note": "Set a timeout for every external request.",
+    "example": "Set a timeout for every external request.",
+    "category": "名词",
+    "source": "supplemental_words.md#115"
+  },
+  {
+    "word": "timestamp",
+    "meaning": "时间戳",
+    "pronunciation": "",
+    "note": "Store the timestamp in UTC.",
+    "example": "Store the timestamp in UTC.",
+    "category": "名词",
+    "source": "supplemental_words.md#116"
+  },
+  {
+    "word": "token",
+    "meaning": "令牌",
+    "pronunciation": "",
+    "note": "Store the access token securely.",
+    "example": "Store the access token securely.",
+    "category": "名词",
+    "source": "supplemental_words.md#60"
+  },
+  {
+    "word": "tokenization",
+    "meaning": "分词，标记化",
+    "pronunciation": "",
+    "note": "text preprocessing",
+    "example": "Tokenization breaks text into pieces the model can process.",
+    "category": "名词",
+    "source": "supplemental_words.md#238"
+  },
+  {
+    "word": "tolerance",
+    "meaning": "容忍",
+    "pronunciation": "/ˈtɑːlərəns/",
+    "note": "",
+    "example": "The term \"tolerance\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-tolerance.md"
+  },
+  {
+    "word": "tool calling",
+    "meaning": "工具调用",
+    "pronunciation": "",
+    "note": "agent capability",
+    "example": "Tool calling lets the model request external actions.",
+    "category": "词组",
+    "source": "supplemental_words.md#239"
+  },
+  {
+    "word": "topology",
+    "meaning": "拓扑结构",
+    "pronunciation": "",
+    "note": "Document the network topology.",
+    "example": "Document the network topology.",
+    "category": "名词",
+    "source": "supplemental_words.md#117"
+  },
+  {
+    "word": "traceability",
+    "meaning": "可追溯性",
+    "pronunciation": "/ˌtresəˈbɪləti/",
+    "note": "",
+    "example": "The term \"traceability\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-traceability.md"
+  },
+  {
+    "word": "trajectory",
+    "meaning": "轨道，轨迹",
+    "pronunciation": "/trəˈdʒektəri/",
+    "note": "",
+    "example": "The term \"trajectory\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-trajectory.md"
+  },
+  {
+    "word": "transaction",
+    "meaning": "事务",
+    "pronunciation": "",
+    "note": "Wrap related database writes in a transaction.",
+    "example": "Wrap related database writes in a transaction.",
+    "category": "名词",
+    "source": "supplemental_words.md#61"
+  },
+  {
+    "word": "transactional",
+    "meaning": "事务性的",
+    "pronunciation": "",
+    "note": "Transactional writes keep related changes consistent.",
+    "example": "Transactional writes keep related changes consistent.",
+    "category": "形容词",
+    "source": "supplemental_words.md#196"
+  },
+  {
+    "word": "transformer",
+    "meaning": "Transformer 模型",
+    "pronunciation": "",
+    "note": "neural network architecture",
+    "example": "The transformer architecture powers many modern language models.",
+    "category": "名词",
+    "source": "supplemental_words.md#240"
+  },
+  {
+    "word": "traversal",
+    "meaning": "遍历",
+    "pronunciation": "/trəˈvərsəl/",
+    "note": "",
+    "example": "The term \"traversal\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-traversal.md"
+  },
+  {
+    "word": "trigger",
+    "meaning": "触发器",
+    "pronunciation": "",
+    "note": "The trigger runs after a row is inserted.",
+    "example": "The trigger runs after a row is inserted.",
+    "category": "名词",
+    "source": "supplemental_words.md#62"
+  },
+  {
+    "word": "tuple",
+    "meaning": "元组",
+    "pronunciation": "",
+    "note": "Return a tuple containing the status and value.",
+    "example": "Return a tuple containing the status and value.",
+    "category": "名词",
+    "source": "supplemental_words.md#118"
+  },
+  {
+    "word": "tweak",
+    "meaning": "扭，调整",
+    "pronunciation": "/twiːk/",
+    "note": "",
+    "example": "The term \"tweak\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-tweak.md"
+  },
+  {
+    "word": "type-safe",
+    "meaning": "类型安全的",
+    "pronunciation": "",
+    "note": "Type-safe APIs catch many mistakes at compile time.",
+    "example": "Type-safe APIs catch many mistakes at compile time.",
+    "category": "形容词",
+    "source": "supplemental_words.md#197"
+  },
+  {
+    "word": "UAT",
+    "meaning": "用户验收测试",
+    "pronunciation": "/null/",
+    "note": "User Acceptance Testing",
+    "example": "User Acceptance Testing",
+    "category": "缩写",
+    "source": "2020-01-01-uat.md"
+  },
+  {
+    "word": "under the hood",
+    "meaning": "引擎罩下，比喻内幕、原理",
+    "pronunciation": "/null/",
+    "note": "Beneath the surface; in its internal workings",
+    "example": "Beneath the surface; in its internal workings",
+    "category": "词组",
+    "source": "2020-01-01-under-the-hood.md"
+  },
+  {
+    "word": "underlying",
+    "meaning": "在下面的，潜在的，深层的",
+    "pronunciation": "/ˌʌndərˈlaɪɪŋ/",
+    "note": "",
+    "example": "The term \"underlying\" is important when reading software engineering documentation.",
+    "category": "形容词",
+    "source": "2020-01-01-underlying.md"
+  },
+  {
+    "word": "underscore",
+    "meaning": "下划线",
+    "pronunciation": "/ˌʌndərˈskɔːr/",
+    "note": "\"_\"",
+    "example": "\"_\"",
+    "category": "符号",
+    "source": "2020-01-01-underscore.md"
+  },
+  {
+    "word": "undertake",
+    "meaning": "承担",
+    "pronunciation": "/ˌʌndərˈteɪk/",
+    "note": "",
+    "example": "The term \"undertake\" is important when reading software engineering documentation.",
+    "category": "动词",
+    "source": "2020-01-01-undertake.md"
+  },
+  {
+    "word": "unit test",
+    "meaning": "单元测试",
+    "pronunciation": "",
+    "note": "A unit test checks one small piece of behavior.",
+    "example": "A unit test checks one small piece of behavior.",
+    "category": "词组",
+    "source": "supplemental_words.md#145"
+  },
+  {
+    "word": "unmount",
+    "meaning": "卸载",
+    "pronunciation": "",
+    "note": "Unmount the component after the test.",
+    "example": "Unmount the component after the test.",
+    "category": "动词",
+    "source": "supplemental_words.md#175"
+  },
+  {
+    "word": "upgrade",
+    "meaning": "升级",
+    "pronunciation": "",
+    "note": "Upgrade the dependency after reading the migration guide.",
+    "example": "Upgrade the dependency after reading the migration guide.",
+    "category": "动词",
+    "source": "supplemental_words.md#176"
+  },
+  {
+    "word": "upwards arrow",
+    "meaning": "向上箭头",
+    "pronunciation": "/null/",
+    "note": "\"↑\"",
+    "example": "\"↑\"",
+    "category": "符号",
+    "source": "2020-01-01-upwards-arrow.md"
+  },
+  {
+    "word": "use case diagram",
+    "meaning": "用例图",
+    "pronunciation": "",
+    "note": "UML diagram",
+    "example": "A use case diagram describes how actors interact with the system.",
+    "category": "词组",
+    "source": "supplemental_words.md#251"
+  },
+  {
+    "word": "user story",
+    "meaning": "用户故事",
+    "pronunciation": "",
+    "note": "A user story describes the goal from the user's view.",
+    "example": "A user story describes the goal from the user's view.",
+    "category": "词组",
+    "source": "supplemental_words.md#146"
+  },
+  {
+    "word": "utilization",
+    "meaning": "利用，使用",
+    "pronunciation": "/ˌjuːtələˈzeɪʃn/",
+    "note": "",
+    "example": "The term \"utilization\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-utilization.md"
+  },
+  {
+    "word": "UUID / GUID",
+    "meaning": "全局唯一标识符",
+    "pronunciation": "/null/",
+    "note": "Globally Unique Identifier",
+    "example": "Globally Unique Identifier",
+    "category": "缩写",
+    "source": "2020-01-01-guid.md"
+  },
+  {
+    "word": "validate",
+    "meaning": "校验",
+    "pronunciation": "",
+    "note": "Validate every request before processing it.",
+    "example": "Validate every request before processing it.",
+    "category": "动词",
+    "source": "supplemental_words.md#177"
+  },
+  {
+    "word": "validator",
+    "meaning": "校验器",
+    "pronunciation": "",
+    "note": "The validator rejects invalid input.",
+    "example": "The validator rejects invalid input.",
+    "category": "名词",
+    "source": "supplemental_words.md#63"
+  },
+  {
+    "word": "variable",
+    "meaning": "变量",
+    "pronunciation": "",
+    "note": "Choose a descriptive variable name.",
+    "example": "Choose a descriptive variable name.",
+    "category": "名词",
+    "source": "supplemental_words.md#64"
+  },
+  {
+    "word": "vector database",
+    "meaning": "向量数据库",
+    "pronunciation": "",
+    "note": "embedding search storage",
+    "example": "A vector database stores embeddings for fast similarity search.",
+    "category": "词组",
+    "source": "supplemental_words.md#241"
+  },
+  {
+    "word": "vector search",
+    "meaning": "向量搜索",
+    "pronunciation": "",
+    "note": "similarity search",
+    "example": "Vector search retrieves passages with similar meanings.",
+    "category": "词组",
+    "source": "supplemental_words.md#242"
+  },
+  {
+    "word": "version",
+    "meaning": "标记版本，版本化",
+    "pronunciation": "",
+    "note": "Version the API to preserve compatibility.",
+    "example": "Version the API to preserve compatibility.",
+    "category": "动词",
+    "source": "supplemental_words.md#178"
+  },
+  {
+    "word": "vibe coding",
+    "meaning": "氛围编程，意图驱动编程",
+    "pronunciation": "",
+    "note": "AI-assisted coding style",
+    "example": "Vibe coding relies on rapid feedback between the developer and the AI assistant.",
+    "category": "词组",
+    "source": "supplemental_words.md#243"
+  },
+  {
+    "word": "vice versa",
+    "meaning": "反之亦然",
+    "pronunciation": "/ˌvaisi'və:sə/",
+    "note": "",
+    "example": "The term \"vice versa\" is important when reading software engineering documentation.",
+    "category": "词组",
+    "source": "2020-01-01-vice-versa.md"
+  },
+  {
+    "word": "viewport",
+    "meaning": "视口",
+    "pronunciation": "",
+    "note": "Test the layout at different viewport widths.",
+    "example": "Test the layout at different viewport widths.",
+    "category": "名词",
+    "source": "supplemental_words.md#65"
+  },
+  {
+    "word": "virtual environment",
+    "meaning": "虚拟环境",
+    "pronunciation": "",
+    "note": "Python dependency isolation",
+    "example": "A virtual environment keeps project dependencies isolated.",
+    "category": "词组",
+    "source": "supplemental_words.md#257"
+  },
+  {
+    "word": "virtual machine",
+    "meaning": "虚拟机",
+    "pronunciation": "",
+    "note": "The virtual machine runs a separate operating system.",
+    "example": "The virtual machine runs a separate operating system.",
+    "category": "词组",
+    "source": "supplemental_words.md#147"
+  },
+  {
+    "word": "volume",
+    "meaning": "卷，存储卷",
+    "pronunciation": "",
+    "note": "Mount a volume for persistent data.",
+    "example": "Mount a volume for persistent data.",
+    "category": "名词",
+    "source": "supplemental_words.md#66"
+  },
+  {
+    "word": "vulnerability",
+    "meaning": "易损性，弱点",
+    "pronunciation": "/ˌvʌlnərəˈbɪləti/",
+    "note": "",
+    "example": "The term \"vulnerability\" is important when reading software engineering documentation.",
+    "category": "名词",
+    "source": "2020-01-01-vulnerability.md"
+  },
+  {
+    "word": "web server",
+    "meaning": "Web 服务器",
+    "pronunciation": "",
+    "note": "The web server serves static files.",
+    "example": "The web server serves static files.",
+    "category": "词组",
+    "source": "supplemental_words.md#148"
+  },
+  {
+    "word": "whitelist",
+    "meaning": "白名单",
+    "pronunciation": "",
+    "note": "Add the trusted domain to the whitelist.",
+    "example": "Add the trusted domain to the whitelist.",
+    "category": "名词",
+    "source": "supplemental_words.md#149"
+  },
+  {
+    "word": "workaround",
+    "meaning": "变通方案",
+    "pronunciation": "/ˈwə:kə,raund/",
+    "note": "特指方案具有迂回性质",
+    "example": "特指方案具有迂回性质",
+    "category": "名词",
+    "source": "2020-01-01-workaround.md"
+  },
+  {
+    "word": "workflow",
+    "meaning": "工作流",
+    "pronunciation": "",
+    "note": "Automate the release workflow.",
+    "example": "Automate the release workflow.",
+    "category": "名词",
+    "source": "supplemental_words.md#67"
+  },
+  {
+    "word": "zero-downtime",
+    "meaning": "零停机的",
+    "pronunciation": "",
+    "note": "Zero-downtime deployment avoids service interruption.",
+    "example": "Zero-downtime deployment avoids service interruption.",
+    "category": "形容词",
+    "source": "supplemental_words.md#198"
+  }
+];
+
+</script>
+  <script>
+window.LEARNING_TIPS = [
+  "这些词汇来自英文计算机书籍、文档和文章中的高频技术表达。",
+  "学习目标是掌握常见技术词后，更顺畅地阅读英文技术文章和官方文档。",
+  "建议把单词、中文含义、英文例句和真实文档语境放在一起复习。"
+];
+window.LEARNING_RESOURCES = [
+  {
+    "title": "专为程序员编写的英语学习指南",
+    "description": "系统学习程序员英语阅读、词汇和表达方式。",
+    "url": "https://a-programmers-guide-to-english.harryyu.me/"
+  },
+  {
+    "title": "Qwerty Learner",
+    "description": "边学单词边练习键盘输入，适合反复巩固词汇。",
+    "url": "https://qwerty-learner.vercel.app/#/"
+  },
+  {
+    "title": "Ele Types",
+    "description": "练习英文打字速度和准确率。",
+    "url": "https://www.eletypes.com/"
+  }
+];
+
+</script>
+  <script>
+const words = Array.isArray(window.WORD_DATA) ? window.WORD_DATA : [];
+const learningTips = Array.isArray(window.LEARNING_TIPS) ? window.LEARNING_TIPS : [];
+const learningResources = Array.isArray(window.LEARNING_RESOURCES) ? window.LEARNING_RESOURCES : [];
+
+const elements = {
+  summary: document.querySelector('#summary'),
+  searchInput: document.querySelector('#searchInput'),
+  categorySelect: document.querySelector('#categorySelect'),
+  shuffleButton: document.querySelector('#shuffleButton'),
+  speakButton: document.querySelector('#speakButton'),
+  youdaoButton: document.querySelector('#youdaoButton'),
+  learningTips: document.querySelector('#learningTips'),
+  learningResources: document.querySelector('#learningResources'),
+  wordList: document.querySelector('#wordList'),
+  countLabel: document.querySelector('#countLabel'),
+  activeCategory: document.querySelector('#activeCategory'),
+  activeWord: document.querySelector('#activeWord'),
+  activeMeaning: document.querySelector('#activeMeaning'),
+  activePronunciation: document.querySelector('#activePronunciation'),
+  activeNote: document.querySelector('#activeNote'),
+  activeExample: document.querySelector('#activeExample'),
+};
+
+let filteredWords = words;
+let activeWord = words[0] ?? null;
+
+init();
+
+function init() {
+  elements.summary.textContent = `${words.length} 个软件技术英语词条，支持离线查看`;
+  fillCategories();
+  renderLearningResources();
+  bindEvents();
+  render();
+}
+
+function fillCategories() {
+  const categories = [...new Set(words.map((item) => item.category || '未分类'))].sort((a, b) =>
+    a.localeCompare(b, 'zh-CN'),
+  );
+
+  elements.categorySelect.innerHTML = [
+    '<option value="">全部词性</option>',
+    ...categories.map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`),
+  ].join('');
+}
+
+function bindEvents() {
+  elements.searchInput.addEventListener('input', render);
+  elements.categorySelect.addEventListener('change', render);
+  elements.shuffleButton.addEventListener('click', selectRandomWord);
+  elements.speakButton.addEventListener('click', () => speak(activeWord?.word));
+  elements.youdaoButton.addEventListener('click', () => playYoudaoAudio(activeWord?.word));
+}
+
+function renderLearningResources() {
+  elements.learningTips.innerHTML = learningTips.map((tip) => `<li>${escapeHtml(tip)}</li>`).join('');
+  elements.learningResources.innerHTML = learningResources
+    .map(
+      (resource) => `<li>
+        <a href="${escapeHtml(resource.url)}" target="_blank" rel="noopener noreferrer">
+          <strong>${escapeHtml(resource.title)}</strong>
+          <span>${escapeHtml(resource.description)}</span>
+        </a>
+      </li>`,
+    )
+    .join('');
+}
+
+function render() {
+  const keyword = elements.searchInput.value.trim().toLowerCase();
+  const category = elements.categorySelect.value;
+
+  filteredWords = words.filter((item) => {
+    const matchesCategory = !category || (item.category || '未分类') === category;
+    const text = `${item.word} ${item.meaning} ${item.note} ${item.example} ${item.pronunciation}`.toLowerCase();
+    return matchesCategory && (!keyword || text.includes(keyword));
+  });
+
+  if (!filteredWords.includes(activeWord)) {
+    activeWord = filteredWords[0] ?? null;
+  }
+
+  renderActiveWord();
+  renderWordList();
+}
+
+function renderActiveWord() {
+  if (!activeWord) {
+    elements.activeCategory.textContent = '';
+    elements.activeWord.textContent = '没有匹配结果';
+    elements.activeMeaning.textContent = '换一个关键词或词性试试';
+    elements.activePronunciation.textContent = '';
+    elements.activeNote.textContent = '';
+    elements.activeExample.textContent = '';
+    elements.speakButton.disabled = true;
+    elements.youdaoButton.disabled = true;
+    return;
+  }
+
+  elements.activeCategory.textContent = activeWord.category || '未分类';
+  elements.activeWord.textContent = activeWord.word;
+  elements.activeMeaning.textContent = activeWord.meaning || '暂无翻译';
+  elements.activePronunciation.textContent = activeWord.pronunciation || '暂无音标';
+  elements.activeNote.textContent = `说明：${activeWord.note || '暂无'}`;
+  elements.activeExample.textContent = `例句：${activeWord.example || '暂无'}`;
+  elements.speakButton.disabled = false;
+  elements.youdaoButton.disabled = false;
+}
+
+function renderWordList() {
+  elements.countLabel.textContent = `${filteredWords.length} / ${words.length}`;
+
+  if (filteredWords.length === 0) {
+    elements.wordList.innerHTML = '<li class="empty-state">没有找到匹配的单词</li>';
+    return;
+  }
+
+  elements.wordList.innerHTML = filteredWords
+    .map((item) => {
+      const activeClass = item === activeWord ? ' is-active' : '';
+      return `<li>
+        <button class="word-item${activeClass}" type="button" data-word="${escapeHtml(item.word)}">
+          <strong>${escapeHtml(item.word)}</strong>
+          <span>${escapeHtml(item.meaning || '暂无翻译')}</span>
+          <small>${escapeHtml(item.category || '未分类')}</small>
+        </button>
+      </li>`;
+    })
+    .join('');
+
+  for (const button of elements.wordList.querySelectorAll('.word-item')) {
+    button.addEventListener('click', () => {
+      activeWord = filteredWords.find((item) => item.word === button.dataset.word) ?? activeWord;
+      renderActiveWord();
+      renderWordList();
+    });
+  }
+}
+
+function selectRandomWord() {
+  if (filteredWords.length === 0) {
+    return;
+  }
+
+  activeWord = filteredWords[Math.floor(Math.random() * filteredWords.length)];
+  renderActiveWord();
+  renderWordList();
+}
+
+function speak(word) {
+  if (!word || !('speechSynthesis' in window)) {
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = 'en-US';
+  window.speechSynthesis.speak(utterance);
+}
+
+function playYoudaoAudio(word) {
+  if (!word) {
+    return;
+  }
+
+  const audio = new Audio(`http://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word.toLowerCase())}&type=2`);
+  audio.play();
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => {
+    const entities = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    };
+    return entities[char];
+  });
+}
+
+</script>
+</body>
+</html>
